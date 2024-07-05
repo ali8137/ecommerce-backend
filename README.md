@@ -15,10 +15,6 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ## Dependencies
 
-### Dependencies Of The Backend Part Of The Project
-
-### Dependencies Of The Frontend Part Of The Project
-
 
 ## Database Design
 
@@ -27,13 +23,9 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ### Prerequisites
 - Java 11+
-- Node.js
-- Npm 
 - MySQL
 
 ### Backend Setup
-
-### Frontend Setup
 
 ### Database Setup
 
