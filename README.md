@@ -7,7 +7,7 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ## Features
 - User authentication and authorization
-- Product listing with search and filter options
+- Product listing with filter options
 - Shopping cart management
 - Order placement and checkout process
 - Admin panel for managing products and orders
@@ -17,6 +17,59 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 
 ## Database Design
+<details>
+  <summary>
+    the tables of the database this application are: Customer, Address, Product, Review, Rating, Category, Inventory, Cart, CartItem, Order, OrderItem, Payment.
+    the many-to-many relationship tables are: Review, Rating, "Cart", "Order".
+    the "weak" entities are: Address, Payment.
+  </summary>
+
+  - relationships:
+    - Customer:
+      - has one-to-many relationship with Cart
+      - has one-to-many relationship with Order
+      - has one-to-many relationship with Payment
+      - has one-to-many relationship with Address
+    - Address:
+      - has many-to-one relationship with Customer
+    - Product:
+      - has many-to-many relationship with Cart
+      - has many-to-many relationship with Order
+      - has many-to-many relationship with Review
+      - has many-to-many relationship with Rating
+      - has many-to-one relationship with Category
+      - has one-to-many (or can be one-to-one) relationship with Inventory
+    - Review:
+      - has many-to-one relationship with Product
+      - has many-to-one relationship with Customer
+    - Rating:
+      - has many-to-one relationship with Product
+      - has many-to-one relationship with Customer
+    - Category:
+      - has one-to-many relationship with Product
+    - Inventory:
+      - has many-to-one (or can be one-to-one) relationship with Product
+    - Category:
+      - has one-to-one relationship with Product
+    - Cart:
+      - has many-to-one relationship with Customer
+      - has one-to-many relationship with CartItem
+    - CartItem:
+      - has one-to-one relationship with Product
+      - has many-to-one relationship with Cart
+    - Order:
+      - has many-to-one relationship with Customer
+      - has one-to-many relationship with OrderItem
+    - OrderItem:
+      - has one-to-one relationship with Product
+      - has many-to-one relationship with Order
+    - Payment:
+      - has many-to-one relationship with Customer
+
+  - associating of the tables with their functionsalities/features in the application:
+    - 
+  
+</details> 
 
 
 ## Installation
