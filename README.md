@@ -10,10 +10,10 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 ## Table of Contents
 - [Features](#features)
 - [Dependencies](#dependencies)
-- [Database Design](#Database Design)
+- [Database Design](#Database-Design)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Documentation](#API Documentation)
+- [API Documentation](#API-Documentation)
 - [Deployment](#deployment)
 
 ---
