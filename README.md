@@ -64,8 +64,6 @@ This is a full-stack e-commerce application built using Spring Boot for the back
       - has one-to-many relationship with Product
     - Inventory:
       - has many-to-one (or can be one-to-one) relationship with Product
-    - Category:
-      - has one-to-one relationship with Product
     - Cart:
       - has many-to-one relationship with Customer
       - has one-to-many relationship with CartItem
@@ -81,26 +79,41 @@ This is a full-stack e-commerce application built using Spring Boot for the back
     - Payment:
       - has many-to-one relationship with Customer
 
-  - associating of the tables with their functionsalities/features in the application:
-    - 
-  
-</details> 
+  - association of the database tables with their functionsalities/features in the application:
+    - Product:
+      - to display store products (along with filteration)
+    - Customer:
+      - for authentication
+    - Address:
+      - for payment process
+    - Review:
+      - for products reviews
+    - Rating:
+      - for products ratings
+    - Category:
+      - for product filteration
+    - Inventory:
+      - to check the stock status of the product
+    - Cart and CartItem:
+      - for checkout process
+    - Order and OrderItem:
+      - for ordering process
+    - Payment:
+      - to complete customer's payment process
+</details>
 
 ---
 
 ## Installation
 
----
 
 ### Prerequisites
 - Java 11+
 - MySQL
 
----
 
 ### Backend Setup
 
----
 
 ### Database Setup
 
