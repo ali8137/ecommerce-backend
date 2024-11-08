@@ -1,9 +1,22 @@
 # Ecommerce-web-application
 
+---
 
 ## Description
 This is a full-stack e-commerce application built using Spring Boot for the backend and React.js for the frontend. The application allows users to browse products, add them to the shopping cart, and complete purchases.
 
+---
+
+## Table of Contents
+- [Features](#features)
+- [Dependencies](#dependencies)
+- [Database Design](#Database_Design)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#API_Documentation)
+- [Deployment](#deployment)
+
+---
 
 ## Features
 - User authentication and authorization
@@ -12,9 +25,11 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 - Order placement and checkout process
 - Admin panel for managing products and orders
 
+---
 
 ## Dependencies
 
+---
 
 ## Database Design
 <details>
@@ -71,22 +86,32 @@ This is a full-stack e-commerce application built using Spring Boot for the back
   
 </details> 
 
+---
 
 ## Installation
+
+---
 
 ### Prerequisites
 - Java 11+
 - MySQL
 
+---
+
 ### Backend Setup
+
+---
 
 ### Database Setup
 
+---
 
 ## Usage
 
+---
 
 ## API Documentation
 
+---
 
 ## Deployment
