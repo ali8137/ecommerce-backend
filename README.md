@@ -34,9 +34,9 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 ## Database Design
 <details>
   <summary>
-    the tables of the database this application are: Customer, Address, Product, Review, Rating, Category, Inventory, Cart, CartItem, Order, OrderItem, Payment.
+    the tables of the database this application are: Customer, Address, Product, Review, Rating, Category, QtyPerSize, Cart, CartItem, Order, OrderItem, Payment.
     the many-to-many relationship tables are: Review, Rating, "Cart", "Order".
-    the "weak" entities are: Address, Payment.
+    the supporting/"weak" entities are: Address, QtyPerSize.
   </summary>
 
   - relationships:
@@ -53,7 +53,7 @@ This is a full-stack e-commerce application built using Spring Boot for the back
       - has many-to-many relationship with Review
       - has many-to-many relationship with Rating
       - has many-to-one relationship with Category
-      - has one-to-many (or can be one-to-one) relationship with Inventory
+      - has one-to-one (or can be one-to-many) relationship with QtyPerSize
     - Review:
       - has many-to-one relationship with Product
       - has many-to-one relationship with Customer
@@ -62,8 +62,8 @@ This is a full-stack e-commerce application built using Spring Boot for the back
       - has many-to-one relationship with Customer
     - Category:
       - has one-to-many relationship with Product
-    - Inventory:
-      - has many-to-one (or can be one-to-one) relationship with Product
+    - QtyPerSize:
+      - has one-to-one (or can be many-to-one) relationship with Product
     - Cart:
       - has many-to-one relationship with Customer
       - has one-to-many relationship with CartItem
@@ -92,7 +92,7 @@ This is a full-stack e-commerce application built using Spring Boot for the back
       - for products ratings
     - Category:
       - for product filteration
-    - Inventory:
+    - QtyPerSize:
       - to check the stock status of the product
     - Cart and CartItem:
       - for checkout process
