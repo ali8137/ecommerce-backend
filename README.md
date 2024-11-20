@@ -34,72 +34,84 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 ## Database Design
 <details>
   <summary>
-    the tables of the database this application are: Customer, Address, Product, Review, Rating, Category, QtyPerSize, Cart, CartItem, Order, OrderItem, Payment.
-    the many-to-many relationship tables are: Review, Rating, "Cart", "Order".
-    the supporting/"weak" entities are: Address, QtyPerSize.
+    the entity classes of the database this application are: User, Address, Product, Review, Rating, Category, QtyPerSize, Cart, CartItem, Order, OrderItem, Payment.
+
+    the entity classes that represent many tables (self-referencing relationships): Category ("category" and "sub_category" tables).
+    the many-to-many relationship tables are: no many-to-many relationships in this project yet.
+    the supporting/"weak"-entity tables are: address, qty_per_size, image.
+    the enumerated helper classes: Role, OrderStatus, ProductSize, RatingValue, PaymentMethod.
+    the record classes: Image.
   </summary>
 
   - relationships:
-    - Customer:
-      - has one-to-many relationship with Cart
-      - has one-to-many relationship with Order
-      - has one-to-many relationship with Payment
-      - has one-to-many relationship with Address
-    - Address:
-      - has many-to-one relationship with Customer
-    - Product:
-      - has many-to-many relationship with Cart
-      - has many-to-many relationship with Order
-      - has many-to-many relationship with Review
-      - has many-to-many relationship with Rating
-      - has many-to-one relationship with Category
-      - has one-to-one (or can be one-to-many) relationship with QtyPerSize
-    - Review:
-      - has many-to-one relationship with Product
-      - has many-to-one relationship with Customer
-    - Rating:
-      - has many-to-one relationship with Product
-      - has many-to-one relationship with Customer
-    - Category:
-      - has one-to-many relationship with Product
-    - QtyPerSize:
-      - has one-to-one (or can be many-to-one) relationship with Product
-    - Cart:
-      - has many-to-one relationship with Customer
-      - has one-to-many relationship with CartItem
-    - CartItem:
-      - has one-to-one relationship with Product
-      - has many-to-one relationship with Cart
-    - Order:
-      - has many-to-one relationship with Customer
-      - has one-to-many relationship with OrderItem
-    - OrderItem:
-      - has one-to-one relationship with Product
-      - has many-to-one relationship with Order
+    - user table:
+      - has one-to-many relationship with cart table
+      - has one-to-many relationship with order table
+      - has one-to-many relationship with payment table
+      - has one-to-many relationship with address table
+      - has one-to-many relationship with review table
+      - has one-to-many relationship with rating table
+    - address table:
+      - has many-to-one relationship with user table
+    - product table:
+      - has one-to-one relationship with cart_item table
+      - has one-to-one relationship with order_item table
+      - has one-to-many relationship with review table
+      - has one-to-many relationship with rating table
+      - has many-to-one relationship with category table
+      - has one-to-many (or can be one-to-one, that is when using alternative design for this table) relationship with qty_per_size table
+    - review table:
+      - has many-to-one relationship with product table
+      - has many-to-one relationship with user table
+      - has one-to-many relationship with rating table
+    - rating table:
+      - has many-to-one relationship with product table
+      - has many-to-one relationship with user table
+      - has many-to-one relationship with review table
+    - category table:
+      - has one-to-many relationship with product table
+      - has one-to-many relationship with sub_category table
+    - sub_category table:
+      - has many-to-one relationship with category table
+    - qty_per_size table:
+      - has many-to-one (or can be one-to-one, that is when using alternative design for this table) relationship with product table
+    - cart table:
+      - has many-to-one relationship with user table
+      - has one-to-many relationship with cart_item table
+    - cart_item table:
+      - has one-to-one relationship with product table
+      - has many-to-one relationship with cart table
+    - order table:
+      - has many-to-one relationship with user table
+      - has one-to-many relationship with order_item table
+    - order_item:
+      - has one-to-one relationship with product table
+      - has many-to-one relationship with order table
     - Payment:
-      - has many-to-one relationship with Customer
+      - has one-to-one relationship with order table
 
   - association of the database tables with their functionsalities/features in the application:
-    - Product:
+    - product table:
       - to display store products (along with filteration)
-    - Customer:
+    - user table:
       - for authentication
-    - Address:
       - for payment process
-    - Review:
+    - address table:
+      - for payment process
+    - review table:
       - for products reviews
-    - Rating:
+    - rating table:
       - for products ratings
-    - Category:
+    - category:
       - for product filteration
-    - QtyPerSize:
+    - qty_per_size table:
       - to check the stock status of the product
-    - Cart and CartItem:
+    - cart and cart_item tables:
       - for checkout process
-    - Order and OrderItem:
+    - order and order_item tables:
       - for ordering process
     - Payment:
-      - to complete customer's payment process
+      - to complete user's payment process
 </details>
 
 ---
