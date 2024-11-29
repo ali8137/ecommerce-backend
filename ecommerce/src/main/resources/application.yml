@@ -118,3 +118,20 @@ spring:
 ## security configuration: (like OAuth2 configuration for resource server and OAuth2 client):
 
 ###########################################################################################################################
+
+## CORS configuration in case you want to configure it from this file:
+#  web:
+#    cors:
+#      allowed-origins: http://localhost:3000
+#      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+#      allowed-headers: "*"
+#      allow-credentials: true
+#      max-age: 3600
+
+###########################################################################################################################
+
+## secret info/properties:
+jwt:
+  secret: ${JWT_SECRET_KEY}
+
+###########################################################################################################################

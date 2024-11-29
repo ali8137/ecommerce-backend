@@ -4,8 +4,12 @@ package com.ali.ecommerce.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -16,7 +20,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
     // the above is optional. it is just for better code readability
-public class User {
+public class User implements UserDetails {
+//  - "implements UserDetails" was only used to make it easier to implement the method of
+//    the UserDetailsService interface with just retrieving the user details from the
+//    database as User which is an implementation of UserDetails
 
 //    spring data jpa deserialization of the JSON request:
     //    when a JSON request that contains a JSON object that corresponds to this entity class/table, and inside this JSON object,
@@ -81,4 +88,35 @@ public class User {
         this.reviews.add(review);
     }
 
+
+    //    UserDetails interface methods:
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }

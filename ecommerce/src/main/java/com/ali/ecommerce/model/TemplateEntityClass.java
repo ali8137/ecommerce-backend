@@ -56,14 +56,19 @@
 //            //        the above overrides change the names of certain columns in the table of this entity class "User" to the above names
 //})
 //public class TemplateEntityClass
-//        //    or
-//        //public class User implements UserDetails
-//        //    the above will allow to implement the UserDetails interface, thus allowing to override and use the methods of that interface.
-//        //    these methods are getUsername(), getPassword(), isEnabled(), isAccountNonExpired(), isAccountNonLocked(), isCredentialsNonExpired(), getAuthorities()
-//        //    or
-//        //public class User extends User
-//        //    or
+//        //  - or
+//        //    public class User implements UserDetails
+//        //  - the above will allow to implement the UserDetails interface, thus allowing to override and use the methods of that interface.
+//        //  - these methods are getUsername(), getPassword(), isEnabled(), isAccountNonExpired(), isAccountNonLocked(), isCredentialsNonExpired(), getAuthorities()
+//        //  - "implements UserDetails" was only used to make it easier to implement the method of
+//        //    the UserDetailsService interface with just retrieving the user details from the
+//        //    database as User which is an implementation of UserDetails
+//        //  - or
+//        //    public class User extends User
+//        //  - or
 //        //    public class TemplateEntityClass
+//        //  - or
+//        //    public record TemplateEntityClass(){}
 //{
 //
 ////    terms:
