@@ -63,4 +63,6 @@ public class AuthenticationService {
                 .accessToken(jwtAccessToken)
                 .build();
     }
+
+    //    TODO: refresh token endpoint + having automatic rotation
 }

@@ -51,6 +51,9 @@ public class SecurityConfiguration {
 //                doFilterInternal method:
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+//        TODO: OAuth2 Configuration
+
+
         return http.build();
     }
 

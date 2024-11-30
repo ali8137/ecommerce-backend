@@ -46,4 +46,7 @@ public class AuthenticationController {
 
         return new ResponseEntity<>(authenticationService.login(request), HttpStatus.OK);
     }
+
+
+//    TODO: refresh token endpoint + having automatic rotation
 }

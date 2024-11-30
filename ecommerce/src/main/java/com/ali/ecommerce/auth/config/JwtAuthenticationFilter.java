@@ -71,6 +71,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //            - check if the access token is valid (credentials in the token are the same as the ones in the database):
             if (jwtService.isAccessTokenValid(jwtAccessToken, userDetails)) {
 
+                //    TODO: add the case of automatic triggering (in the frontend side) of
+                //     sending request to the refresh token endpoint, in case of the access token
+                //     being present but expired. check this chat with ChatGPT to know what to do in
+                //     the frontend side at this level https://chatgpt.com/share/674b59e0-b488-8013-99cb-bf04f2cc7ef4
+
                 // add the user to the security context:
 
 //                UsernamePasswordAuthenticationToken is the default implementation of

@@ -117,6 +117,8 @@ spring:
 
 ## security configuration: (like OAuth2 configuration for resource server and OAuth2 client):
 
+# TODO: Oauth2 configuration
+
 ###########################################################################################################################
 
 ## CORS configuration in case you want to configure it from this file:
