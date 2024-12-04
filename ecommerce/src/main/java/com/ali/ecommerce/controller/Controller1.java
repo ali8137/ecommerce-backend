@@ -2,6 +2,7 @@
 //
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.*;
 //
 //
@@ -14,7 +15,7 @@
 //public class Controller1 {
 //
 //
-////    private final ServiceClass1 serviceObj1;
+//    private final ServiceClass1 serviceObj1;
 //
 ////    @Autowired
 ////    public Controller1(ServiceClass1 serviceObj1) {
@@ -40,6 +41,12 @@
 //            @PathVariable("id") ClassName2 obj2
 //    ) {
 //
+//        //    delegating the functionality to the corresponding Service method...
+//
+//        return new ResponseEntity<>(serviceObj1.serviceMethod1() /* or any other class object instance such as String, ... */ , HttpStatus.OK);
+//        //    - or
+//        //      return ResponseEntity.ok("company updated successfully");
+//
 //    }
 //
 //
@@ -51,6 +58,12 @@
 //    )
 //    @PostMapping()
 //    public void /*or ResponseEntity<String>*/  postMethod1(@RequestBody ClassName1 obj1) {
+//
+//        //    delegating the functionality to the corresponding Service method...
+//
+//        return new ResponseEntity<>(serviceObj1.serviceMethod2() /* or any other class object instance such as String, ... */ , HttpStatus.OK);
+//        //    - or
+//        //      return ResponseEntity.ok("company updated successfully");
 //
 //    }
 //
@@ -67,6 +80,12 @@
 //            @PathVariable("id") ClassName2 obj2
 //    ) {
 //
+//        //    delegating the functionality to the corresponding Service method...
+//
+//        return new ResponseEntity<>(serviceObj1.serviceMethod3() /* or any other class object instance such as String, ... */ , HttpStatus.OK);
+//        //    - or
+//        //      return ResponseEntity.ok("company updated successfully");
+//
 //    }
 //
 //
@@ -81,6 +100,12 @@
 //    public void /*or ResponseEntity<String>*/ putMethod1(
 //            @PathVariable("id") ClassName1 obj1
 //    ) {
+//
+//        //    delegating the functionality to the corresponding Service method...
+//
+//        return new ResponseEntity<>(serviceObj1.serviceMethod4() /* or any other class object instance such as String, ... */ , HttpStatus.OK);
+//        //    - or
+//        //      return ResponseEntity.ok("company updated successfully");
 //
 //    }
 //

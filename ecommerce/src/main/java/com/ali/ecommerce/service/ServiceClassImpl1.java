@@ -1,10 +1,20 @@
 //package com.ali.ecommerce.service;
 //
 //
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
 //
 //@Service
+//@RequiredArgsConstructor
 //public class ServiceClassImpl1 implements ServiceInterface1 {
+//
+//    private final Repository1 repository1;
+//
+////    @Autowired
+////    public ServiceClassImpl1(Repository1 repository1) {
+////        this.repository1 = repository1;
+////    }
 //
 //    public ClassName1 method1(ParameterClass1 obj1) {
 //
@@ -43,4 +53,12 @@
 //        //    exception handling
 //        //    logging
 //    }
+//
+//
+////    helper private methods:
+//
+//    private ClassName3 helperMethod1(ParameterClass3 obj3) {
+//
+//    }
+//
 //}

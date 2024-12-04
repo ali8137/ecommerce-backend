@@ -9,6 +9,7 @@ import com.ali.ecommerce.model.User;
 import com.ali.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,19 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(AuthenticationRequest request) {
+
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getEmail(),
+//                        request.getPassword()
+//                )
+//        );
+////        this "authenticationManager" will do all the job for us, in case the username (email in this case) or the password is not correct, an exception will be thrown.
+////        authenticationManager.authenticate(...) will use the "AuthenticationManager" to perform the authentication. the "UsernamePasswordAuthenticationToken "is created with the provided email and password. the "AuthenticationManager" then attempts to authenticate the user with the configured authentication providers. in our case, the "DaoAuthenticationProvider" configured in ApplicationConfig will handle this.
+////      - the above "AuthenticationManager" will check if the token "UsernamePasswordAuthenticationToken" of the user
+////        is valid/authenticate or not. i am not sure though if it also store the Authentication object of the user after a
+////        successful authentication in the SecurityContextHolder.
+
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with username: " + request.getEmail())
