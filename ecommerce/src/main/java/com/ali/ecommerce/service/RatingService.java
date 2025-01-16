@@ -1,64 +1,52 @@
 package com.ali.ecommerce.service;
 
 
+import com.ali.ecommerce.model.Rating;
+import com.ali.ecommerce.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class RatingService {
 
-    private final Repository1 repository1;
+    private final RatingRepository repository;
 
 //    @Autowired
-//    public ServiceClassImpl1(Repository1 repository1) {
-//        this.repository1 = repository1;
+//    public RatingService(RatingRepository repository) {
+//        this.repository = repository;
 //    }
 
-    public ClassName1 method1(ParameterClass1 obj1) {
-
-        //    business logic
-        //    database operations
-        //    file operations
-        //    network operations
-        //    data validation
-        //    data transformation
-        //    DTO-to-class conversion
-        //    class-to-DTO conversion
-        //    event-driven handling
-        //    email notification sending
-        //    caching
-        //    security-related operations (like JWT token generation, password encryption, etc.)
-        //    AI integration
-        //    exception handling
-        //    logging
-
-    }
-
-    public ClassName2 method2(ParameterClass2 obj2) {
-        //    business logic
-        //    database operations
-        //    file operations
-        //    network operations
-        //    data validation
-        //    data transformation
-        //    DTO-to-class conversion
-        //    class-to-DTO conversion
-        //    event-driven handling
-        //    email notification sending
-        //    caching
-        //    security-related operations (like JWT token generation, password encryption, etc.)
-        //    AI integration
-        //    exception handling
-        //    logging
-    }
-
+//    public List<Rating> getRatingsPerProduct(Long productId) {
+//        /* TODO: features: you can also implement here the feature of showing a fixed number of
+//            ratings, and then the user will choose to retrieve more elements either by
+//            scrolling down or by clicking on "load more" button*/
+//
+//        //    business logic
+//        //    database operations
+//        //    file operations
+//        //    network operations
+//        //    data validation
+//        //    data transformation
+//        //    DTO-to-class conversion
+//        //    class-to-DTO conversion
+//        //    event-driven handling
+//        //    email notification sending
+//        //    caching
+//        //    security-related operations (like JWT token generation, password encryption, etc.)
+//        //    AI integration
+//        //    exception handling
+//        //    logging
+//
+//
+//
+//
+//    }
 
 //    helper private methods:
 
-    private ClassName3 helperMethod1(ParameterClass3 obj3) {
-
-    }
 
 }

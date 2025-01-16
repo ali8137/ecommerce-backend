@@ -6,6 +6,7 @@
 //import jakarta.persistence.*;
 //import lombok.*;
 //
+//import java.util.Objects;
 //
 //
 //@Embeddable
@@ -173,7 +174,7 @@
 //
 ////    uni-directional vs bidirectional relationships between entity classes:
 //    // ⁃ in bidirectional:
-//    //   - setting he values of the relationship data fields in the related entity classes:
+//    //   - setting the values of the relationship data fields in the related entity classes:
 //    //     - we need to set the value of the @JoinColumn annotation (for two reasons: to persist the related entities to the database,
 //    //       and to set the value of the data field of the java object instance - of the entity class containing this data field annotated with @JoinColumn annotation - in the in-memory of the backend server because the data fields annotated with relationship annotations like @ManyToOne, @OneToOne, ...
 //    //       are managed by spring data jpa, and hence unless annotated with relationship annotations,
@@ -301,19 +302,13 @@
 //
 //
 //
-//    @ElementCollection(
-//            fetch = FetchType.EAGER
-//                //            this means when this table is fetched from the database,
-//                //            the related table representing the below data field "objectName6" will also be fetched from the database along with it
-//    )
-//    @CollectionTable(
-//            name = "nameOfTheEmbeddableTable1",
-//            joinColumns = @JoinColumn(
-//                    name = "theNameOfTheForeignKeyOfTheTableOfTheBelowEmbeddedDataField1"
-//                        //    note that the foreign key in the embedded class is not actually a foreign key
-//            )
-//    )
+////  - you can have an @Embedded data field in an @Embeddable class
+////  - a new separate dedicated table of the below data field won't be
+////    created. the row of the below data field will be stored in the same
+////    table as this entity class. thus no need to JOIN operations to apply SQL
+////    queries on this below data field
 //    @Embedded
+//        // the above annotation was added here because the embeddable class of this data field is a single data type and not a collection
 //        // this data field being annotated with this annotation means that the class of this field is a weak entity class;
 //        // where there is no primary key for the class of this field as identifying this class is not important or needed.
 //        // in this case, the class of this field is typically not having a many-to-many or one-to-many relationships with other entity classes
@@ -326,6 +321,42 @@
 //        //    making a class embedded rather than an entity class will restrict the scaling options of this embedded class. for example, this embedded class can't be made to have one-to-many or many-to-many relationships with tables
 //        //    think about embedding only when the class-to-be-embedded has either one-to-many or one-to-one relationship with the table where this to-be-embedded-class is embedded in
 //        //    making a class embedded rather than an entity class will prevent us from applying SQL queries on this embedded table. SQL queries such as selecting, adding, deleting records from this table. SQL queries also such as aggregates (sum, ...). SQL queries also like joining this table with other tables. ...
+//
+//
+//
+//
+////  - you can have an @ElementCollection data field in an @Embeddable class
+////  - a table will be created for the below data field, this table contains foreign
+////    key only and doesn't contain a primary key
+////  - unlike one-to-many relationship, here we dont have to set the data field of @Embeddable class
+////    to point to the object instance of the related entity class EntityClass1 (this class) that
+////    contains the below data field.
+////  - so, we need to do a JOIN operation to apply SQL queries on this below data field
+//    @ElementCollection(
+//            fetch = FetchType.EAGER
+//            //            this means when this table is fetched from the database,
+//            //            the related table representing the below data field "objectName6" will also be fetched from the database along with it
+//    )
+//    @CollectionTable(
+//            name = "nameOfTheEmbeddableTable1",
+//            joinColumns = @JoinColumn(
+//                    name = "theNameOfTheForeignKeyOfTheTableOfTheBelowEmbeddedDataField1"
+//                    //    note that the foreign key in the embedded class is not actually a foreign key
+//            )
+//    )
+////    the above two annotations are used for when the embeddable class of the below data field is a collection
+//    private WeakEntityCLassNameCollection5 objectName7;
+//    //    if an embedded class has a one-to-many relationship with a table, then it is wrong to consider it as embedded/weak class
+//    //    an embedded class can only have one-to-one or many-to-one relationship with a table
+//    //    an embedded class can have these one-to-one or many-to-one relationships with more than one table
+//    //    making a class embedded rather than an entity class will make the data of this class to be redundant for many records of the table this embedded class is related to. so, this embedded class better be having small amount of data or attributes
+//    //    making a class embedded (or more specifically, when using @ElementCollection) rather than an entity class will make the SQL queries to be less efficient and take more time, because the embedded does not actually contain a foreign key,and hence no indexing advantage
+//    //    making a class embedded rather than an entity class will restrict the scaling options of this embedded class. for example, this embedded class can't be made to have one-to-many or many-to-many relationships with tables
+//    //    think about embedding only when the class-to-be-embedded has either one-to-many or one-to-one relationship with the table where this to-be-embedded-class is embedded in
+//    //    making a class embedded rather than an entity class will prevent us from applying SQL queries on this embedded table. SQL queries such as selecting, adding, deleting records from this table. SQL queries also such as aggregates (sum, ...). SQL queries also like joining this table with other tables. ...
+//
+//
+//
 //
 //
 //
@@ -346,8 +377,8 @@
 //
 //
 //    @JsonIgnore
-//        //    the above annotation will prevent the serialization (and not deserialization) of this field. which means that this field will not be shown in the JSON response.
-//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and not deserialization).
+//        //    the above annotation will prevent the serialization (and also deserialization) of this field. which means that this field will not be shown in the JSON response.
+//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and also deserialization).
 //
 //    @ManyToOne
 //        //    - in the case of unidirectional relationship/mapping, if this annotation was added here, then the annotation @OneToMany should not be added in the class "ClassName3"
@@ -402,8 +433,8 @@
 //
 //
 //    @JsonIgnore
-//        //    the above annotation will prevent the serialization (and not deserialization) of this field. which means that this field will not be shown in the JSON response.
-//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and not deserialization).
+//        //    the above annotation will prevent the serialization (and also deserialization) of this field. which means that this field will not be shown in the JSON response.
+//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and also deserialization).
 //
 //    @OneToMany
 //        //    - in the case of unidirectional relationship/mapping, if this annotation was added here, then the annotation @ManyToOne should not be added in the class "CollectionClassName4"
@@ -418,8 +449,16 @@
 //        //    - JPA's relationship management: in unidirectional relationship/mapping, we only need to set the value of the data field annotated with @JoinColumn in the entity/object instance that contains it
 //        //      while in bidirectional relationship/mapping, we need to also set the value of the relationship data field of the entity/object instance of the other related entity class (that does not contain the data field annotated with @JoinColumn) in this relationship
 //        //      note that the above note is related to JPA's relationship management, and it is not related to JPA's mechanism of persisting/commiting/flushing the data into the database
+//        //    - note: this annotation must be added beside adding the annotation @ManyToOne, because the data field that has type Collection must be
+//        //      annotated with the @OneToMany (or another suitable annotation). or we can choose to just add the data fields
+//        //      with annotation @ManyToOne ( or @OneToOne or @ManyToMany) on the first side of the relationship and
+//        //      choose not to add the data fields annotated with the complementary annotations (@OneToMany or @OneToOne or @ManyToMany) at the other side of the relationship
 //            (
 //            mappedBy = "nameOfTheForeignKey2",
+//                //   - without "mappedBy" property, spring data jpa will treat the below data field as
+//                //     a separate relationship than the relationship of the related data field in the
+//                //     related entity class, and thus will create a relationship/join table for this
+//                //     one-to-many relationship
 //            cascade = CascadeType.ALL,
 //                //    the above means that the changes to this table will cascade to the table of the below data field.
 //                //    the changes could be operations like persist, merge, remove, refresh, and detach
@@ -447,8 +486,8 @@
 //
 //
 //    @JsonIgnore
-//        //    the above annotation will prevent the serialization (and not deserialization) of this field. which means that this field will not be shown in the JSON response.
-//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and not deserialization).
+//        //    the above annotation will prevent the serialization (and also deserialization) of this field. which means that this field will not be shown in the JSON response.
+//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and also deserialization).
 //
 //    @ManyToMany
 //            //    - in the case of unidirectional relationship/mapping, if this annotation was added here, then the annotation @ManyToMany should not be added in the class "CollectionClassName7"
@@ -462,6 +501,8 @@
 //            //    - JPA's relationship management: in unidirectional relationship/mapping, we only need to set the value of the data field annotated with @JoinColumn in the entity/object instance that contains it
 //            //      while in bidirectional relationship/mapping, we need to also set the value of the relationship data field of the entity/object instance of the other related entity class (that does not contain the data field annotated with @JoinColumn) in this relationship
 //            //      note that the above note is related to JPA's relationship management, and it is not related to JPA's mechanism of persisting/commiting/flushing the data into the database
+//            //    - note: we can choose to just add the data field with annotation @ManyToMany on the first side of the relationship and
+//            //      choose not to add the data field annotated with the complementary annotation @ManyToMany at the other side of the relationship
 //            (
 //            targetEntity = CollectionClassName3.class,
 //                //    note sure about the value of the above property
@@ -510,8 +551,8 @@
 //
 //
 //    @JsonIgnore
-//        //    the above annotation will prevent the serialization (and not deserialization) of this field. which means that this field will not be shown in the JSON response.
-//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and not deserialization).
+//        //    the above annotation will prevent the serialization (and also deserialization) of this field. which means that this field will not be shown in the JSON response.
+//        //    @JsonIgnore annotation is designed to ignore specific fields during JSON serialization (and also deserialization).
 //
 //    @OneToOne
 //        //    - in the case of unidirectional relationship/mapping, if this annotation was added here, then the annotation @OneToOne should not be added in the class "ClassName6"
@@ -525,6 +566,8 @@
 //        //    - JPA's relationship management: in unidirectional relationship/mapping, we only need to set the value of the data field annotated with @JoinColumn in the entity/object instance that contains it
 //        //      while in bidirectional relationship/mapping, we need to also set the value of the relationship data field of the entity/object instance of the other related entity class (that does not contain the data field annotated with @JoinColumn) in this relationship
 //        //      note that the above note is related to JPA's relationship management, and it is not related to JPA's mechanism of persisting/commiting/flushing the data into the database
+//        //    - note: we can choose to just add the data field with annotation @OneToOne on the first side of the relationship and
+//        //      choose not to add the data field annotated with the complementary annotation @OneToOne at the other side of the relationship
 //            (
 //            targetEntity = ClassName6.class,
 //                //    note sure about the value of the above property
@@ -603,5 +646,29 @@
 ////      the order items in the order, etc.
 ////    - check this chat with ChatGPT about helper methods
 ////      in entity classes: https://chatgpt.com/share/6734c4dd-d338-8013-a29c-b86164fa3ac4
+//
+//    //    the below method customization is not added to the @Embeddable class
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        TemplateEntityClass that = (TemplateEntityClass) o;
+//        return id.equals(that.id);
+//        //  //  or
+//        //  return Objects.equals(id, that.id);
+//    }
+//    //  - the above is to override the equals method to state that two categories with the same
+//    //    id are equal. this is a good practice for entity classes in JPA. and since we overrode
+//    //    equals() method, we should also override hashCode() method.
+//
+//    //    the below method customization is not added to the @Embeddable class
+//    public int hashCode() {
+//        return Objects.hash(id);
+//    }
+//    //    the above means the hashing of this entity class will be based on the id of this
+//    //    entity class instead of the object reference. so, in a HashMap or a HashSet, two
+//    //    TemplateEntityClass having the same id will be considered equal. and hence in the case of
+//    //    HashSet, it will only keep one of them when adding the two of them.
+//
 //
 //}

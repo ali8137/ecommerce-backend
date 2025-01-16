@@ -8,6 +8,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -48,6 +49,17 @@ public class Cart {
             referencedColumnName = "id"
     )
     private User user;
+    @JsonIgnore
+    //    ignore one field when having a bidirectional mapping. better be the @OneToMany field
+    @OneToMany(
+            mappedBy = "cart",
+            //   - without "mappedBy" property, spring data jpa will treat the below data field as
+            //     a separate relationship than the relationship of the data field "cart" in the
+            //     entity class "CartItem", and thus will create a relationship/join table for this
+            //     one-to-many relationship
+            cascade = CascadeType.ALL
+            //            the above property is usually added for the data field annotated with @OneToMany
+    )
     private List<CartItem> cartItems;
 
 
@@ -63,7 +75,7 @@ public class Cart {
                         //    new BigDecimal(cartItem.getPrice().toString())
                         //  - valueOf() method accepts as parameter any type of object and
                         //    returns the string representation of that object
-                                .multiply(BigDecimal.valueOf(cartItem.getQuantity().longValue())))
+                                .multiply(BigDecimal.valueOf(cartItem.calculateQuantity().longValue())))
                                 //  - or
                                 //    .multiply(new BigDecimal(cartItem.getQuantity().toString())))
                 //  - it was okay to use "new" keyword instantiation above
@@ -81,5 +93,26 @@ public class Cart {
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        Cart that = (Cart) o;
+        return Objects.equals(this.id, that.id);
+        //  //  or
+        //  return id.equals(that.id);
+    }
+    //  - the above is to override the equals method to state that two categories with the same
+    //    id are equal. this is a good practice for entity classes in JPA. and since we overrode
+    //    equals() method, we should also override hashCode() method.
+
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+    //    the above means the hashing of this entity class will be based on the id of this
+    //    entity class instead of the object reference. so, in a HashMap or a HashSet, two
+    //    TemplateEntityClass having the same id will be considered equal. and hence in the case of
+    //    HashSet, it will only keep one of them when adding the two of them.
 
 }

@@ -4,6 +4,8 @@ package com.ali.ecommerce.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
+
 
 @Entity
 @Data
@@ -225,5 +227,26 @@ public class Rating
 
 
 //    Helper methods
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        Rating that = (Rating) o;
+        return Objects.equals(this.id, that.id);
+        //  //  or
+        //  return id.equals(that.id);
+    }
+    //  - the above is to override the equals method to state that two categories with the same
+    //    id are equal. this is a good practice for entity classes in JPA. and since we overrode
+    //    equals() method, we should also override hashCode() method.
+
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+    //    the above means the hashing of this entity class will be based on the id of this
+    //    entity class instead of the object reference. so, in a HashMap or a HashSet, two
+    //    TemplateEntityClass having the same id will be considered equal. and hence in the case of
+    //    HashSet, it will only keep one of them when adding the two of them.
 
 }
