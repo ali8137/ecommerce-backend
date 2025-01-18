@@ -2,6 +2,7 @@ package com.ali.ecommerce.config;
 
 import com.ali.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
@@ -40,6 +42,11 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
+//                .map(user -> {
+//                    log.info("user: {}", user);
+//                    return user;
+//                })
+////                the above is just for debugging purposes
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 

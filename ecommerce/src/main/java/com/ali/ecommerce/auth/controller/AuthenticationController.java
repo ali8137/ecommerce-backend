@@ -33,15 +33,23 @@ public class AuthenticationController {
 
 //        (8) create the AuthenticationService class and implement the register() method:
         return new ResponseEntity<>(authenticationService.register(request), HttpStatus.CREATED);
+//      - in both cases, the "register" and the "login", a JWT token will be generated and
+//        returned. in case of registration, after registering, the user will be able to access
+//        the application resources using the token, like the case of login
     }
 
 //    (6) create the login endpoint:
-    @PostMapping("/login")
+//    @PostMapping("/login")
+    @PostMapping("/authenticate")
 //    the requests to the endpoint "/login" are intercepted by
-//    the filter "UsernamePasswordAuthenticationFilter" of "spring security" library
+//    the filter "UsernamePasswordAuthenticationFilter" of "spring security" library. which
+//    is dedicated for the form login with username and password inputs. don't use UsernamePasswordAuthenticationFilter
+//    filter here to validate your data
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
 //        #1 validate the user credentials: in this case, the filter
 //        "UsernamePasswordAuthenticationFilter" will take care of this
+//      - related to the above note: don't use UsernamePasswordAuthenticationFilter filter
+//        here to validate your data. using AuthenticationManager is enough
 //        #2 generate and return the jwt token
 
         return new ResponseEntity<>(authenticationService.login(request), HttpStatus.OK);

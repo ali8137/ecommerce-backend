@@ -2,10 +2,7 @@ package com.ali.ecommerce.exception.exceptionHandler;
 
 
 import com.ali.ecommerce.customAnnotaion.DescriptionAndSubCategoryConstraint;
-import com.ali.ecommerce.exception.CategoryException;
-import com.ali.ecommerce.exception.CategoryInvalidDescriptionException;
-import com.ali.ecommerce.exception.CustomJsonException;
-import com.ali.ecommerce.exception.ProductException;
+import com.ali.ecommerce.exception.*;
 import com.ali.ecommerce.exception.errorResponse.ProductErrorResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -121,5 +118,24 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCustomJsonException(CustomJsonException exception) {
 
         return new ResponseEntity<>("error: " + exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ProductErrorResponse> handleUserException(UserException exception) {
+
+        ProductErrorResponse response = new ProductErrorResponse(
+//                the above name "ProductErrorResponse" should be changed either to fit
+//                the Category exception, thus changing it to "CategoryErrorResponse", or should
+//                be changed to fit both together and be generic, thus changing it to "ErrorResponse"
+                exception.getMessage(),
+                LocalDateTime.now(),
+                HttpStatus.FOUND
+                //    - the http status of the above line will be just used to
+                //      get the http status in the frontend and display it
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        //        the httpStatus of the above line will be the http status in the frontend side
     }
 }
