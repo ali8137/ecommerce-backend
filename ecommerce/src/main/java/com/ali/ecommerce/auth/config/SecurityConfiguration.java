@@ -3,6 +3,7 @@ package com.ali.ecommerce.auth.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,9 +28,42 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- beginning
+//    - the below is wrong because the AuthenticationManager of
+//      UserNamePasswordAuthenticationFilter must be set directly, and
+//      because UsernamePasswordAuthenticationFilter is not a bean
+////  - version 2 of replacing the UsernamePasswordAuthenticationFilter
+////    with the CustomUsernamePasswordAuthenticationFilter:
+//    private final CustomUsernamePasswordAuthenticationFilter customFilter;
+//    private final AuthenticationManager authenticationManager;
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- end
+
+
 //    (1) create the SecurityFilterChain bean:
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- beginning
+//            //  - version 1 of replacing the UsernamePasswordAuthenticationFilter
+//            //    with the CustomUsernamePasswordAuthenticationFilter:
+//            CustomUsernamePasswordAuthenticationFilter customFilter
+//            //    the above is method injection of the CustomUsernamePasswordAuthenticationFilter bean
+
+////            //  - version 3 of replacing the UsernamePasswordAuthenticationFilter
+////            //    with the CustomUsernamePasswordAuthenticationFilter:
+//            AuthenticationManager authenticationManager
+//////            the above is the AuthenticationManager bean
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- end
+    ) throws Exception {
+
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- beginning
+////        //  - version 3 of replacing the UsernamePasswordAuthenticationFilter
+////        //    with the CustomUsernamePasswordAuthenticationFilter:
+//        CustomUsernamePasswordAuthenticationFilter customFilter =
+//                new CustomUsernamePasswordAuthenticationFilter(authenticationManager);
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- end
+
         http
                 .csrf(CsrfConfigurer::disable)
                 //  the csrf above is disabled because we are using JWT authentication
@@ -38,7 +72,9 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/api/**").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+//                                .requestMatchers("/login").permitAll()
+//                                .requestMatchers("/register").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
@@ -51,6 +87,26 @@ public class SecurityConfiguration {
 //                (4) create the JwtAuthenticationFilter bean without implementing its
 //                doFilterInternal method:
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- beginning
+//                .addFilterAt(customFilter, UsernamePasswordAuthenticationFilter.class);
+////                .addFilter(customFilter);
+
+//                //  - version 1 of replacing the UsernamePasswordAuthenticationFilter
+//                //    with the CustomUsernamePasswordAuthenticationFilter:
+//                //      - the above line will replace the UsernamePasswordAuthenticationFilter with
+//                //        the CustomUsernamePasswordAuthenticationFilter
+//                .addFilterAt(customFilter, UsernamePasswordAuthenticationFilter.class);
+//    ignore the below as UsernamePasswordAuthenticationFilter is dedicated to form login with username and password inputs ---- end
+
+//    - the below is wrong because the AuthenticationManager of
+//      UserNamePasswordAuthenticationFilter must be set directly, and
+//      because UsernamePasswordAuthenticationFilter is not a bean
+//                //  - version 2 of replacing the UsernamePasswordAuthenticationFilter
+//                //    with the CustomUsernamePasswordAuthenticationFilter:
+//                .addFilterAt(getCustomFilter(), UsernamePasswordAuthenticationFilter.class);
+//                //      - the above line will replace the UsernamePasswordAuthenticationFilter with
+//                //        the CustomUsernamePasswordAuthenticationFilter
 
 //        TODO: OAuth2 Configuration
 
@@ -74,4 +130,16 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
+//    - the below is wrong because the AuthenticationManager of
+//      UserNamePasswordAuthenticationFilter must be set directly, and
+//      because UsernamePasswordAuthenticationFilter is not a bean
+//    //  - version 2 of replacing the UsernamePasswordAuthenticationFilter
+//    //    with the CustomUsernamePasswordAuthenticationFilter:
+//    public CustomUsernamePasswordAuthenticationFilter getCustomFilter() {
+//        customFilter.setAuthenticationManager(authenticationManager);
+//        return customFilter;
+//    }
+
 }

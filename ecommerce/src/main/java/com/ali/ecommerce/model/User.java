@@ -23,6 +23,9 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
     // the above is optional. it is just for better code readability
+@ToString(
+        exclude = {"addresses", "ratings", "reviews"}
+)
 public class User implements UserDetails
 {
 //  - "implements UserDetails" was only used to make it easier to implement the method of
@@ -75,6 +78,10 @@ public class User implements UserDetails
     private String phoneNumber;
     @NotNull(message = "email cannot be null")
     @NotBlank(message = "email cannot be blank")
+    @Column(
+            unique = true
+    )
+    /* TODO: developer-constraint: email should be unique */
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;

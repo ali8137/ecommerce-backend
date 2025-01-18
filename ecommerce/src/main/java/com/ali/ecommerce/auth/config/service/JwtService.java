@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,15 +20,19 @@ import java.util.function.Function;
 public class JwtService {
 
 //    @Value("${jwt.secret}")
+//    the above (that is, the annotation) can't be used because the below data field is static
     private static final String SECRET_KEY;
+    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
 
     static {
-        SECRET_KEY = System.getProperty("jwt.secret");
+//        SECRET_KEY = System.getProperty("jwt.secret");
+//      - the above won't work, because the property "jwt.secret" is not a JVM property
+//        but rather an environment property
 //      - or
-//        SECRET_KEY = System.getenv("JWT_SECRET_KEY");
+        SECRET_KEY = System.getenv("JWT_SECRET_KEY");
     }
 
-//    the below is wrong in my case but left it for learning purposes:
+//    the below is wrong in my case, but left it for learning purposes:
 //    public JwtService(@Value("${jwt.secret}") String jwtSecretKey) {
 //        SECRET_KEY = jwtSecretKey;
 //    }
@@ -66,6 +72,7 @@ public class JwtService {
     }
 
     private SecretKey getSignInKey() {
+//        log.info("secret key: {}", SECRET_KEY);
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }

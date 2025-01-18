@@ -69,6 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     userDetailsService.loadUserByUsername(userEmail);
 
 //            - check if the access token is valid (credentials in the token are the same as the ones in the database):
+//            - the checking will include verification of the sign key, and then checking of the username and the expiration date
             if (jwtService.isAccessTokenValid(jwtAccessToken, userDetails)) {
 
                 //    TODO: add the case of automatic triggering (in the frontend side) of
@@ -78,8 +79,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 // add the user to the security context:
 
-//                UsernamePasswordAuthenticationToken is the default implementation of
+//              - UsernamePasswordAuthenticationToken is the default implementation of
 //                Authentication interface.
+//              - the Authentication token includes the userDetails of the user and
+//                the authorities of the user (derived from the userDetails of the user)
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
