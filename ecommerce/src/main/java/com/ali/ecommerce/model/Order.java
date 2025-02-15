@@ -51,7 +51,21 @@ public class Order {
     private BigDecimal totalPrice;
 //    BigDecimal is for critical accurate/precise calculations, where error is not tolerated.
 //    Double is for when the calculation includes exact values (like currencies)
+    @Column(
+            updatable = false
+    )
     private LocalDateTime orderDate;
+//    one-to-many, because in our business logic, a user can have one orders at a time.
+    @JsonIgnore
+//    added the above to fit with the business logic
+    @ManyToOne(
+//            cascade = CascadeType.ALL,
+//            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            referencedColumnName = "id"
+    )
+    private User user;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @JsonIgnore

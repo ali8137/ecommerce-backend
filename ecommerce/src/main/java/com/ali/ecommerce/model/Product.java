@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +26,12 @@ public class Product {
         fields without the qtyPerSizeAndColors data field. and another table B (the real product table) which
         inherits table A, this table contains qtyPerSizeAndColors data field. the tables CartItem and OrderItem should
         should be related to table A in this case */
+//   - EDIT (THIS NOTE DOES NOT ACTUALLY APPLY) related to the above note: i have changed the design of
+//     the entity class CartItem and OrderItem, and hence the above_TODO became unnecessary
+
+    /* TODO: developer-constraint: when a color or a size of this product is to be removed, check if this
+        color or size is the only last available color or size of this product. if so, remove this product
+        */
 
 //    spring data jpa deserialization of the JSON request:
     //    when a JSON request that contains a JSON object that corresponds to this entity class/table, and inside this JSON object,
@@ -69,7 +76,8 @@ public class Product {
     //    I believe this design is the best.
     //  - another alternative design of the above data field is to create a dedicated database
     //    table "QtyPerSize" and this table will be referencing a single table "QtyPerColor"
-    private Double price;
+//    private Double price;
+    private BigDecimal price;
     @ElementCollection
     @CollectionTable(
             joinColumns = @JoinColumn(

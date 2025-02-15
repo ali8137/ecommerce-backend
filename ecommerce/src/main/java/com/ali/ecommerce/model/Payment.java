@@ -210,6 +210,9 @@ public class Payment {
     private Long id;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+    @Column(
+            updatable = false
+    )
     private LocalDateTime paymentDate;
     private BigDecimal amount;
     private String transactionId;

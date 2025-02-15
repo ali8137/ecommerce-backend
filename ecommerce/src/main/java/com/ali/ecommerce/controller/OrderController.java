@@ -1,34 +1,56 @@
-//package com.ali.ecommerce.controller;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//
-//// - Using @CrossOrigin annotation on Controller level:
-//// @CrossOrigin
-//// @CrossOrigin(origins = "http://localhost:5173")
-//@RestController
-//@RequestMapping("/api")
-//@RequiredArgsConstructor
-//public class OrderController {
-//
-//
-//    private final ServiceClass1 serviceObj1;
-//
-////    @Autowired
-////    public Controller1(ServiceClass1 serviceObj1) {
-////        this.serviceObj1 = serviceObj1;
-////    }
-//
-//
-////  - Method level CORS configuration:
-////    @CrossOrigin(origins = "http://localhost:5173")
-////    public void method1() {}
-//
-//
-//
+package com.ali.ecommerce.controller;
+
+import com.ali.ecommerce.model.Order;
+import com.ali.ecommerce.service.OrderService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+
+// - Using @CrossOrigin annotation on Controller level:
+// @CrossOrigin
+// @CrossOrigin(origins = "http://localhost:5173")
+@RestController
+@RequestMapping("/api/orders")
+@RequiredArgsConstructor
+public class OrderController {
+
+
+    private final OrderService orderService;
+
+//    @Autowired
+//    public OrderController(OrderService orderService) {
+//        this.orderService = orderService;
+//    }
+
+
+//  - Method level CORS configuration:
+//    @CrossOrigin(origins = "http://localhost:5173")
+//    public void method1() {}
+
+
+    /* TODO: developer-constraint: a CartException propagates from the service layer
+        to the below method
+        */
+    //    @CrossOrigin
+    @PostMapping("/place-order")
+    public ResponseEntity<String> placeOrder(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) /*throws CartException*/ {
+
+
+        //    delegating the functionality to the corresponding Service method...
+
+        orderService.createOrderFromCart(userDetails);
+
+        return new ResponseEntity<>("order placed successfully", HttpStatus.CREATED);
+    }
+
+
 //    //    @CrossOrigin
 //    @ResponseStatus(
 //            HttpStatus.NO_CONTENT
@@ -108,5 +130,5 @@
 //        //      return ResponseEntity.ok("company updated successfully");
 //
 //    }
-//
-//}
+
+}

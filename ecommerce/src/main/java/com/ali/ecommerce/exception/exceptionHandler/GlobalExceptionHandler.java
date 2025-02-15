@@ -4,6 +4,8 @@ package com.ali.ecommerce.exception.exceptionHandler;
 import com.ali.ecommerce.customAnnotaion.DescriptionAndSubCategoryConstraint;
 import com.ali.ecommerce.exception.*;
 import com.ali.ecommerce.exception.errorResponse.ProductErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -138,4 +140,136 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FOUND);
         //        the httpStatus of the above line will be the http status in the frontend side
     }
+
+    @ExceptionHandler(CartException.class)
+    public ResponseEntity<ProductErrorResponse> handleCartException(CartException exception) {
+
+        ProductErrorResponse response = new ProductErrorResponse(
+//                the above name "ProductErrorResponse" should be changed either to fit
+//                the Category exception, thus changing it to "CategoryErrorResponse", or should
+//                be changed to fit both together and be generic, thus changing it to "ErrorResponse"
+                exception.getMessage(),
+                LocalDateTime.now(),
+                HttpStatus.FOUND
+                //    - the http status of the above line will be just used to
+                //      get the http status in the frontend and display it
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        //        the httpStatus of the above line will be the http status in the frontend side
+//        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+//      - the http status NO_CONTENT means there will be no response back
+//        to the frontend user, which is not suitable here
+    }
+
+    @ExceptionHandler(OrderException.class)
+    public ResponseEntity<ProductErrorResponse> handleOrderException(OrderException exception) {
+
+        ProductErrorResponse response = new ProductErrorResponse(
+//                the above name "ProductErrorResponse" should be changed either to fit
+//                the Category exception, thus changing it to "CategoryErrorResponse", or should
+//                be changed to fit both together and be generic, thus changing it to "ErrorResponse"
+                exception.getMessage(),
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND
+                //    - the http status of the above line will be just used to
+                //      get the http status in the frontend and display it
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        //        the httpStatus of the above line will be the http status in the frontend side
+//        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+//      - the http status NO_CONTENT means there will be no response back
+//        to the frontend user, which is not suitable here
+    }
+
+
+    @ExceptionHandler(PaymentException.class)
+    public ResponseEntity<ProductErrorResponse> handlePaymentException(PaymentException exception) {
+
+        ProductErrorResponse response = new ProductErrorResponse(
+//                the above name "ProductErrorResponse" should be changed either to fit
+//                the Category exception, thus changing it to "CategoryErrorResponse", or should
+//                be changed to fit both together and be generic, thus changing it to "ErrorResponse"
+                exception.getMessage(),
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST
+                //    - the http status of the above line will be just used to
+                //      get the http status in the frontend and display it
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        //        the httpStatus of the above line will be the http status in the frontend side
+//        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+//      - the http status NO_CONTENT means there will be no response back
+//        to the frontend user, which is not suitable here
+    }
+
+
+    @ExceptionHandler(StripePaymentException.class)
+    public ResponseEntity<ProductErrorResponse> handleStripePaymentException(StripePaymentException exception) {
+
+        ProductErrorResponse response = new ProductErrorResponse(
+//                the above name "ProductErrorResponse" should be changed either to fit
+//                the Category exception, thus changing it to "CategoryErrorResponse", or should
+//                be changed to fit both together and be generic, thus changing it to "ErrorResponse"
+                exception.getMessage(),
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST
+                //    - the http status of the above line will be just used to
+                //      get the http status in the frontend and display it
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        //        the httpStatus of the above line will be the http status in the frontend side
+//        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+//      - the http status NO_CONTENT means there will be no response back
+//        to the frontend user, which is not suitable here
+    }
+
+
+    @ExceptionHandler(CartItemException.class)
+    public ResponseEntity<ProductErrorResponse> handleCartItemException(CartItemException exception) {
+
+        ProductErrorResponse response = new ProductErrorResponse(
+//                the above name "ProductErrorResponse" should be changed either to fit
+//                the Category exception, thus changing it to "CategoryErrorResponse", or should
+//                be changed to fit both together and be generic, thus changing it to "ErrorResponse"
+                exception.getMessage(),
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND
+                //    - the http status of the above line will be just used to
+                //      get the http status in the frontend and display it
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        //        the httpStatus of the above line will be the http status in the frontend side
+//        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+//      - the http status NO_CONTENT means there will be no response back
+//        to the frontend user, which is not suitable here
+    }
+
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ProductErrorResponse> handleExpiredJwtException(ExpiredJwtException exception) {
+
+        ProductErrorResponse response = new ProductErrorResponse(
+//                the above name "ProductErrorResponse" should be changed either to fit
+//                the Category exception, thus changing it to "CategoryErrorResponse", or should
+//                be changed to fit both together and be generic, thus changing it to "ErrorResponse"
+                exception.getMessage(),
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST
+                //    - the http status of the above line will be just used to
+                //      get the http status in the frontend and display it
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        //        the httpStatus of the above line will be the http status in the frontend side
+//        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+//      - the http status NO_CONTENT means there will be no response back
+//        to the frontend user, which is not suitable here
+    }
+
+
 }

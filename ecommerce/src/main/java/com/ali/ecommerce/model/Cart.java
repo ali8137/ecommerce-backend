@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,19 +39,27 @@ public class Cart {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 //    BigDecimal is for critical accurate/precise calculations, where error is not tolerated.
 //    Double is for when the calculation includes exact values (like currencies)
+//  - we could have made the below relationship one-to-one rather than
+//    one-to-many, because in our business logic, a user can only have one cart at a time.
+    @JsonIgnore
+//    added the above to fit with the business logic
     @ManyToOne(
 //            cascade = CascadeType.ALL,
 //            fetch = FetchType.LAZY
     )
+    /* TODO: this relationship should have been better defined as one-to-one
+        */
     @JoinColumn(
             referencedColumnName = "id"
     )
     private User user;
-    @JsonIgnore
-    //    ignore one field when having a bidirectional mapping. better be the @OneToMany field
+//    @JsonIgnore
+//    //   - ignore one field when having a bidirectional mapping. better be the @OneToMany field
+//    //   - related to the above note: not in this case, it is better not to have the above @JsonIgnore
+//    //     annotation here based on the business logic
     @OneToMany(
             mappedBy = "cart",
             //   - without "mappedBy" property, spring data jpa will treat the below data field as
@@ -58,37 +67,43 @@ public class Cart {
             //     entity class "CartItem", and thus will create a relationship/join table for this
             //     one-to-many relationship
             cascade = CascadeType.ALL
-            //            the above property is usually added for the data field annotated with @OneToMany
+            //          - the above property is usually added for the data field annotated with @OneToMany
+            //          - for the CASCADE_ALL to work, we must first set the below "cartItem" data field of
+            //            a Cart entity to be equal to the list of the CartItem entities that are
+            //            related to this Cart entity
     )
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();
+//    better initialize the array data field to avoid null pointer exceptions when applying methods to it
 
 
 
 //    helper methods:
-    public BigDecimal calculateTotalPrice() {
-        return this.cartItems.stream()
-                .map(cartItem ->
-                        cartItem.getPrice()
-                        //  - this note is wrong:
-                        //    new BigDecimal(String.valueOf(cartItem.getPrice()))
-                        //    or
-                        //    new BigDecimal(cartItem.getPrice().toString())
-                        //  - valueOf() method accepts as parameter any type of object and
-                        //    returns the string representation of that object
-                                .multiply(BigDecimal.valueOf(cartItem.calculateQuantity().longValue())))
-                                //  - or
-                                //    .multiply(new BigDecimal(cartItem.getQuantity().toString())))
-                //  - it was okay to use "new" keyword instantiation above
-                //    because we are directly passing this object
-                //    instance to the above method and hence it will
-                //    directly achieve its usage without the overhead of managing this object instance.
-                //    besides, this object instance is going to be used only in this
-                //    place and not in multiple places in the whole application. also,
-                //    there must be different object instances (in other words, prototypes and not singleton)
-                //    for each usage of this class "BigDecimal"
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-                //    the above reduce() method is equivalent to: reduce(new BigDecimal(0), (a, b) -> a.add(b));
-    }
+////    removed the below to have a better and seamless design of CartItem class ---- beginning
+//    public BigDecimal calculateTotalPrice() {
+//        return this.cartItems.stream()
+//                .map(cartItem ->
+//                        cartItem.getPrice()
+//                        //  - this note is wrong:
+//                        //    new BigDecimal(String.valueOf(cartItem.getPrice()))
+//                        //    or
+//                        //    new BigDecimal(cartItem.getPrice().toString())
+//                        //  - valueOf() method accepts as parameter any type of object and
+//                        //    returns the string representation of that object
+//                                .multiply(BigDecimal.valueOf(cartItem.calculateQuantity().longValue())))
+//                                //  - or
+//                                //    .multiply(new BigDecimal(cartItem.getQuantity().toString())))
+//                //  - it was okay to use "new" keyword instantiation above
+//                //    because we are directly passing this object
+//                //    instance to the above method and hence it will
+//                //    directly achieve its usage without the overhead of managing this object instance.
+//                //    besides, this object instance is going to be used only in this
+//                //    place and not in multiple places in the whole application. also,
+//                //    there must be different object instances (in other words, prototypes and not singleton)
+//                //    for each usage of this class "BigDecimal"
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//                //    the above reduce() method is equivalent to: reduce(new BigDecimal(0), (a, b) -> a.add(b));
+//    }
+////    removed the below to have a better and seamless design of CartItem class ---- end
 
     public void addCartItem(CartItem cartItem) {
         this.cartItems.add(cartItem);
