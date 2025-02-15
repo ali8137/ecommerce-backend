@@ -1,10 +1,8 @@
 package com.ali.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,29 +35,55 @@ public class OrderItem {
     )
     private Long id;
     private BigDecimal price;
+    /* TODO: the above data field better be removed, because there is "price"
+        data field in the related entity class "Product
+        */
 //    private Integer quantity;
-    @ElementCollection
-    @CollectionTable(
-            joinColumns = @JoinColumn(
-                    name = "product_id"
-            )
-    )
-    //    @Embedded
-    //    the above annotation should not be added here, because the below data field is a collection of data type and not a single data type
-    // this data field being annotated with this annotation means that the class of this field is a weak entity class;
-    // where there is no primary key for the class of this field as identifying this class is not important or needed.
-    // in this case, the class of this field is typically not having a many-to-many or one-to-many relationships with other entity classes
-    private List<QtyPerSizeAndColor> qtyPerSizeAndColors;
-    //  - alternative design of the above data field is to create a dedicated database table "QtyPerSizeAndColor",
-    //    and this table will be referencing 2 other tables "QtyPerSize" and "QtyPerColor".
-    //    I believe this design is the best.
-    //  - another alternative design of the above data field is to create a dedicated database
-    //    table "QtyPerSize" and this table will be referencing a single table "QtyPerColor"
-    @OneToOne
+//    removed the below to have a better and seamless design ---- beginning
+//    related to the above note: this design also works, but it may complicate the business
+//    logic, and at the same time may manifest a good unique/special UI
+//    @ElementCollection
+//    @CollectionTable(
+//            joinColumns = @JoinColumn(
+//                    name = "product_id"
+//            )
+//    )
+//    //    @Embedded
+//    //    the above annotation should not be added here, because the below data field is a collection of data type and not a single data type
+//    // this data field being annotated with this annotation means that the class of this field is a weak entity class;
+//    // where there is no primary key for the class of this field as identifying this class is not important or needed.
+//    // in this case, the class of this field is typically not having a many-to-many or one-to-many relationships with other entity classes
+//    private List<QtyPerSizeAndColor> qtyPerSizeAndColors;
+//    //  - alternative design of the above data field is to create a dedicated database table "QtyPerSizeAndColor",
+//    //    and this table will be referencing 2 other tables "QtyPerSize" and "QtyPerColor".
+//    //    I believe this design is the best.
+//    //  - another alternative design of the above data field is to create a dedicated database
+//    //    table "QtyPerSize" and this table will be referencing a single table "QtyPerColor"
+//    removed the below to have a better and seamless design ---- end
+    private String color;
+    private String size;
+    private Integer quantity;
+//    @OneToOne
+    @ToString.Exclude
+//  - the above is to prevent infinite looping from happening by preventing the below data
+//    field from being printed in the toString() method. where applying toString() on the
+//    object instance A of this entity class Category will call also the toString() method on the
+//    object instance B that is the parent category of this object instance A of this entity class
+//    Category. and then this will call the toString() method on the object instance A that is the object
+//    instance A which is the child category of the parent category which is the object instance B.
+//  - note that logging using a logger (log.info(), ...) will call the toString() method implicitly
+    @JsonIgnore
+    @ManyToOne
+//    changed the above from OneToOne to ManyToOne to better suit the current design
     @JoinColumn(
         referencedColumnName = "id"
+//            unique = false
     )
     private Product product;
+    /* TODO: the above relationship reflects certain inconsistency/redundancy in
+        the current design of the database. thus, when changing the database design, it
+        will become consistent, and with no redundancy of data
+        */
     @ManyToOne
     @JoinColumn(
             referencedColumnName = "id"
@@ -70,11 +94,13 @@ public class OrderItem {
 
     //    helper methods:
 
-    //  - the names of the helper methods better not to include prefix "get" and "set"
-    //    to prevent confusion with the getter and setter methods of this entity class
-    public Integer calculateQuantity() {
-        return qtyPerSizeAndColors.size();
-    }
+//    //    removed the below to have a better and seamless design ---- beginning
+//    //  - the names of the helper methods better not to include prefix "get" and "set"
+//    //    to prevent confusion with the getter and setter methods of this entity class
+//    public Integer calculateQuantity() {
+//        return qtyPerSizeAndColors.size();
+//    }
+//    //    removed the below to have a better and seamless design ---- end
 
     @Override
     public boolean equals(Object o) {

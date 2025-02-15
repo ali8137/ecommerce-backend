@@ -10,6 +10,9 @@ import java.util.List;
 
 @Builder
 @Getter
+/* TODO: add an annotation here to impose validation on many data
+    fields at once, for better readability
+    */
 public class CreateNewCategoryRequestDTO {
 
     @NotNull(message = "category names cannot be null")
