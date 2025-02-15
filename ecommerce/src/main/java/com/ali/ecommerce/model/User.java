@@ -85,6 +85,9 @@ public class User implements UserDetails
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Column(
+            updatable = false
+    )
     private LocalDateTime createdAT;
     // - we can choose to remove the below @OneToMany annotated data fields in this side of the relationship,
     //   thus having a unidirectional relationship/mapping

@@ -37,9 +37,9 @@ public class CategoryController {
 //    public void method1() {}
 
 
-    /* developer-constraint: a CategoryException propagates from the service layer
-    to the below method.
-    */
+    /* TODO: developer-constraint: a CategoryException propagates from the service layer
+        to the below method.
+        */
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>>  getAllCategories() throws CategoryException {
 //      - it is wrong to add the throws CategoryException in the above method, because this will
@@ -58,9 +58,9 @@ public class CategoryController {
     }
 
 
-    /* developer-constraint: a CategoryException propagates from the service layer
-    to the below method
-    */
+    /* TODO: developer-constraint: a CategoryException propagates from the service layer
+        to the below method
+        */
     @GetMapping("/possible-categories")
     public ResponseEntity<List<CategoryDTO>>  getEachPossibleCategory() /*throws CategoryException*/ {
 //      - it is wrong to add the throws CategoryException in the above method, because this will
@@ -80,9 +80,9 @@ public class CategoryController {
 
 
 
-    /* developer-constraint: a CategoryInvalidDescriptionException propagates from the service layer
-    to the below method
-    */
+    /* TODO: developer-constraint: a CategoryInvalidDescriptionException propagates from the service layer
+        to the below method
+        */
 //  - in the frontend, the user first retrieves the present
 //    categories with their id, and then he chooses one of them as parent category
 //    of the new category(ies) he wants to add.

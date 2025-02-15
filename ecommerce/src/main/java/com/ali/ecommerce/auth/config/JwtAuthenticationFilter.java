@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -43,13 +45,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userEmail;
 
         authHeader = request.getHeader("Authorization");
+        log.info("authHeader: {}", authHeader);
 
+        // - if the Authorization header is missing or doesn't start
+        //   with "Bearer ", the request continues down the filter chain as unauthenticated
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().write("Missing or invalid Authorization header");
+
             filterChain.doFilter(request, response);
             return;
         }
 
         jwtAccessToken = authHeader.substring(7);
+
+        log.info("jwtAccessToken: {}", jwtAccessToken);
 
         userEmail = jwtService.extractUsername(jwtAccessToken);
 

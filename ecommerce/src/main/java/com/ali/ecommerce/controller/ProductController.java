@@ -313,7 +313,7 @@ public class ProductController {
 
         service.addProducts(products);
 
-        return new ResponseEntity<>("Products added successfully" , HttpStatus.OK);
+        return new ResponseEntity<>("Products added successfully" , HttpStatus.CREATED);
     }
 
 
@@ -326,7 +326,7 @@ public class ProductController {
 
         service.addProduct(product);
 
-        return new ResponseEntity<>("Product added successfully" , HttpStatus.OK);
+        return new ResponseEntity<>("Product added successfully" , HttpStatus.CREATED);
     }
 
 

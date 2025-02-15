@@ -1,34 +1,62 @@
-//package com.ali.ecommerce.controller;
+package com.ali.ecommerce.controller;
+
+import com.ali.ecommerce.DTO.CreateCheckoutSessionRequestDTO;
+import com.ali.ecommerce.service.PaymentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+
+// - Using @CrossOrigin annotation on Controller level:
+// @CrossOrigin
+ @CrossOrigin(origins = "http://localhost:5173")
+@RestController
+@RequestMapping("/api/payment")
+@RequiredArgsConstructor
+public class PaymentController {
+
+
+    private final PaymentService service;
+
+//    @Autowired
+//    public PaymentController(PaymentService service) {
+//        this.service = service;
+//    }
+
+
+//  - Method level CORS configuration:
+//    @CrossOrigin(origins = "http://localhost:5173")
+//    public void method1() {}
+
+
+
+//    //    @CrossOrigin
+//    @PostMapping("/create-checkout-session")
+//    public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestBody Map<String, Object> requestBody) {
 //
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
+//        //    delegating the functionality to the corresponding Service method...
+//        Map<String, String> response = service.createCheckoutSession(requestBody);
 //
-//
-//// - Using @CrossOrigin annotation on Controller level:
-//// @CrossOrigin
-//// @CrossOrigin(origins = "http://localhost:5173")
-//@RestController
-//@RequestMapping("/api")
-//@RequiredArgsConstructor
-//public class PaymentController {
-//
-//
-//    private final ServiceClass1 serviceObj1;
-//
-////    @Autowired
-////    public Controller1(ServiceClass1 serviceObj1) {
-////        this.serviceObj1 = serviceObj1;
-////    }
-//
-//
-////  - Method level CORS configuration:
-////    @CrossOrigin(origins = "http://localhost:5173")
-////    public void method1() {}
-//
-//
-//
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+
+
+    //    @CrossOrigin
+    @PostMapping("/create-checkout-session")
+    public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestBody CreateCheckoutSessionRequestDTO requestBody) {
+
+        //    delegating the functionality to the corresponding Service method...
+        Map<String, String> response = service.createCheckoutSession(requestBody);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
 //    //    @CrossOrigin
 //    @ResponseStatus(
 //            HttpStatus.NO_CONTENT
@@ -108,5 +136,5 @@
 //        //      return ResponseEntity.ok("company updated successfully");
 //
 //    }
-//
-//}
+
+}

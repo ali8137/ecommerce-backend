@@ -1,6 +1,7 @@
 package com.ali.ecommerce.auth.config.service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -46,10 +47,25 @@ public class JwtService {
         return extractClaim(jwtAccessToken, Claims::getSubject);
 //        calling the method extractClaim() dynamically, that is with passing
 //        a method reference or lambda expression in place of a
-//        Functional interface passed as a parameter to this method extractClaim()
+//        Functional interface passed as a parameter to this method extractClaim().
+//        this will be equivalent in this case to "claims.getSubject();" where "claims = extractAllClaims(jwtAccessToken)"
     }
 
-    public <R> R extractClaim(String jwtAccessToken, Function<Claims, R> claimsResolver) {
+    public <R> R extractClaim(
+            String jwtAccessToken,
+            Function<Claims, R> claimsResolver
+    ) throws JwtException, IllegalArgumentException {
+
+//        try {
+//
+//            final Claims claims = extractAllClaims(jwtAccessToken);
+//        } catch (Exception /* or JwtException*/ e) {
+//            throw new RuntimeException(e);
+//        }
+//            return claimsResolver.apply(claims);
+
+        log.info("jwtAccessToken: {}", jwtAccessToken);
+
         final Claims claims = extractAllClaims(jwtAccessToken);
         return claimsResolver.apply(claims);
     }
@@ -66,7 +82,7 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) /* 15 min * 60 sec * 1000 milliseconds */
+                .expiration(new Date(System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000)) /* 15 min * 60 sec * 1000 milliseconds */
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
     }
@@ -77,7 +93,9 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private Claims extractAllClaims(String jwtAccessToken) {
+    private Claims extractAllClaims(
+            String jwtAccessToken
+    ) throws JwtException, IllegalArgumentException {
         return Jwts.parser()
                 .verifyWith(getSignInKey())
                 .build()

@@ -1,30 +1,27 @@
-package com.ali.ecommerce.controller;
+package com.ali.ecommerce.webhook.stripe;
 
-import com.ali.ecommerce.model.Order;
-import com.ali.ecommerce.service.OrderService;
+import com.ali.ecommerce.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 
 // - Using @CrossOrigin annotation on Controller level:
 // @CrossOrigin
 // @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/webhook/stripe")
 @RequiredArgsConstructor
-public class OrderController {
+public class StripeWebhookController {
 
-
-    private final OrderService orderService;
+    private final StripeWebhookService stripeWebhookService;
 
 //    @Autowired
-//    public OrderController(OrderService orderService) {
-//        this.orderService = orderService;
+//    public StripeWebhookController(StripeWebhookService stripeWebhookService) {
+//        this.stripeWebhookService = stripeWebhookService;
 //    }
 
 
@@ -33,22 +30,19 @@ public class OrderController {
 //    public void method1() {}
 
 
-    /* TODO: developer-constraint: a CartException propagates from the service layer
-        to the below method
-        */
-    //    @CrossOrigin
-    @PostMapping("/place-order")
-    public ResponseEntity<String> placeOrder(
-            @AuthenticationPrincipal UserDetails userDetails
-    ) /*throws CartException*/ {
 
+//    TODO: test this webhook handler method
+    //    @CrossOrigin
+    @PostMapping("")
+    public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload,
+                                                      @RequestHeader("Stripe-Signature") String sigHeader) {
 
         //    delegating the functionality to the corresponding Service method...
+        stripeWebhookService.handleStripeWebhook(payload, sigHeader);
 
-        orderService.createOrderFromCart(userDetails);
-
-        return new ResponseEntity<>("order placed successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("stripe webhook received", HttpStatus.OK);
     }
+
 
 
 //    //    @CrossOrigin
@@ -130,5 +124,4 @@ public class OrderController {
 //        //      return ResponseEntity.ok("company updated successfully");
 //
 //    }
-
 }
