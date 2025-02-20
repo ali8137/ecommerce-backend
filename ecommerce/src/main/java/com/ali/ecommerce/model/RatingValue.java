@@ -13,7 +13,7 @@ public enum RatingValue {
     FOUR(4),
     FOUR_HALF(4.5),
     FIVE(5);
-//    the above are constructors
+    //    the above are constructors
 
     private final double value;
 

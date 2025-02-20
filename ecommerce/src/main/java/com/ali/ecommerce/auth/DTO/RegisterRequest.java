@@ -15,15 +15,5 @@ public class RegisterRequest {
     private String email;
     private String password;
 
-
 //    helper/utility/additional behavior methods:
-
 }
-
-// or
-//public record RegisterRequest(
-//        String firstName,
-//        String lastName,
-//        String email,
-//        String password
-//) {}

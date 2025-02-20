@@ -4,19 +4,14 @@ import com.stripe.Stripe;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+/* TODO: we can remove the below class because we accessed the key inside the service class directly*/
 @Configuration
 public class StripeConfig {
 
     @Value("${stripe.api.key}")
     private String stripeApiKey;
-//    or:
-//    private static final String stripeApiKey;
-//    static {
-//        stripeApiKey = System.getenv("STRIPE_SECRET_KEY");
-//    }
 
     public StripeConfig() {
-//        the @configuration class StripeConfig will be constructed when the application starts
         Stripe.apiKey = stripeApiKey;
     }
 

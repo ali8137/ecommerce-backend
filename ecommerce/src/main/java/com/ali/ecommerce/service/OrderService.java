@@ -8,7 +8,6 @@ import com.ali.ecommerce.model.OrderItem;
 import com.ali.ecommerce.model.OrderStatus;
 import com.ali.ecommerce.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,31 +21,6 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final CartService cartService;
-
-//    @Autowired
-//    public ServiceClassImpl1(Repository1 repository1) {
-//        this.repository1 = repository1;
-//    }
-
-//    public ClassName1 method1(ParameterClass1 obj1) {
-//
-//        //    business logic
-//        //    database operations
-//        //    file operations
-//        //    network operations
-//        //    data validation
-//        //    data transformation
-//        //    DTO-to-class conversion
-//        //    class-to-DTO conversion
-//        //    event-driven handling
-//        //    email notification sending
-//        //    caching
-//        //    security-related operations (like JWT token generation, password encryption, etc.)
-//        //    AI integration
-//        //    exception handling
-//        //    logging
-//
-//    }
 
     // create an order from the user's cart and save it to the database:
     public void createOrderFromCart(UserDetails userDetails) {
@@ -76,19 +50,12 @@ public class OrderService {
 
                     // associate the order item with the order:
                     orderItem.setOrder(order);
-//                    for the foreign key
 
                     return orderItem;
                 }).collect(Collectors.toList());
 
         // set the order items in the order:
         order.setOrderItems(orderItems);
-//        for java object graph
-
-//        order = orderRepository.save(order);
-//      - the above is wrong because the variable "order"
-//        used inside the lambda expression is reassigned in
-//        the above line (i,e order = ... )
 
         // save the order along with the order items in the database:
         orderRepository.save(order);
@@ -99,6 +66,5 @@ public class OrderService {
 
 
 //    helper private methods:
-
 
 }

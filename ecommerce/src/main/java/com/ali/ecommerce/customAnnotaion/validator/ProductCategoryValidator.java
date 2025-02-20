@@ -13,7 +13,6 @@ public class ProductCategoryValidator implements ConstraintValidator<ProductCate
 
     @Override
     public boolean isValid(Product product, ConstraintValidatorContext constraintValidatorContext) {
-
         return product.getCategory().getSubCategories() == null ||
                 product.getCategory().getSubCategories().isEmpty();
     }
