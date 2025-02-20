@@ -14,38 +14,11 @@ import org.springframework.stereotype.Service;
 public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
-//  - injecting the associated services of the below repositories would have
-//    been better for modularity, scalability and testing:
-    /* TODO: add the service classes rather than the repositories below*/
+    /* TODO: injecting the associated services of the below repositories would have been better for
+        modularity, scalability and testing. add the service classes rather than the repositories below*/
     private final CartRepository cartRepository;
 
-//    @Autowired
-//    public CartItemService(CartItemRepository repository) {
-//        this.repository = repository;
-//    }
-
-//    public ClassName1 method1(ParameterClass1 obj1) {
-//
-//        //    business logic
-//        //    database operations
-//        //    file operations
-//        //    network operations
-//        //    data validation
-//        //    data transformation
-//        //    DTO-to-class conversion
-//        //    class-to-DTO conversion
-//        //    event-driven handling
-//        //    email notification sending
-//        //    caching
-//        //    security-related operations (like JWT token generation, password encryption, etc.)
-//        //    AI integration
-//        //    exception handling
-//        //    logging
-//
-//    }
-
-
-    public void incrementCartItem(Long cartItemId/*, CartItem updatedcartItem*/) {
+    public void incrementCartItem(Long cartItemId) {
         // fetch the cart item from the database:
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new CartItemException("Cart item not found"));
@@ -72,9 +45,7 @@ public class CartItemService {
         // decrement the quantity of the cart item:
         if (cartItem.getQuantity() == 1) {
             cartItemRepository.delete(cartItem);
-//            or:
-//            repository.deleteById(cartItemId);
-//            return;
+            // repository.deleteById(cartItemId);
         }
         else cartItem.setQuantity(cartItem.getQuantity() - 1);
 
@@ -107,7 +78,5 @@ public class CartItemService {
 
 
 //    helper private methods:
-
-
 
 }

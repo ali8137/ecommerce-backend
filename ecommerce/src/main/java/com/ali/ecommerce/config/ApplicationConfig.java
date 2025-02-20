@@ -2,8 +2,6 @@ package com.ali.ecommerce.config;
 
 import com.ali.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,18 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
-@Slf4j
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
-//    @Autowired
-//    public ApplicationConfig(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
-
-//    (5) create the UserDetailsService bean and the PasswordEncoder bean, to create
-//    the AuthenticationProvider bean. and create the AuthenticationManager bean:
+    // create the UserDetailsService bean and the PasswordEncoder bean to create
+    // the AuthenticationProvider bean. and create the AuthenticationManager bean:
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -42,11 +34,6 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)
-//                .map(user -> {
-//                    log.info("user: {}", user);
-//                    return user;
-//                })
-////                the above is just for debugging purposes
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 

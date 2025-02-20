@@ -16,8 +16,6 @@ public class CreateCheckoutSessionRequestDTO {
     @NotNull(message = "cartItems cannot be null")
     @NotEmpty(message = "cartItems cannot be empty")
     private List<CartItem> cartItems;
-    //    or:
-//    private Long cartId;
     @NotNull(message = "currency cannot be null")
     @NotBlank(message = "currency cannot be blank")
     private String currency;

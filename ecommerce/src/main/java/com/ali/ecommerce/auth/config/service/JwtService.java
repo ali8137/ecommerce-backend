@@ -5,14 +5,10 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Function;
@@ -20,52 +16,27 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-//    @Value("${jwt.secret}")
-//    the above (that is, the annotation) can't be used because the below data field is static
+    // @Value("${jwt.secret}")
     private static final String SECRET_KEY;
-    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
 
     static {
-//        SECRET_KEY = System.getProperty("jwt.secret");
-//      - the above won't work, because the property "jwt.secret" is not a JVM property
-//        but rather an environment property
-//      - or
+        // SECRET_KEY = System.getProperty("jwt.secret");
         SECRET_KEY = System.getenv("JWT_SECRET_KEY");
     }
 
-//    the below is wrong in my case, but left it for learning purposes:
-//    public JwtService(@Value("${jwt.secret}") String jwtSecretKey) {
-//        SECRET_KEY = jwtSecretKey;
-//    }
-
-//    (10) implement the generateAccessToken, extractUsername and isAccessTokenValid methods:
+    // implement the generateAccessToken, extractUsername and isAccessTokenValid methods:
     public String generateAccessToken(UserDetails userDetails) {
         return generateAccessToken(new HashMap<>(), userDetails);
     }
 
     public String extractUsername(String jwtAccessToken) {
         return extractClaim(jwtAccessToken, Claims::getSubject);
-//        calling the method extractClaim() dynamically, that is with passing
-//        a method reference or lambda expression in place of a
-//        Functional interface passed as a parameter to this method extractClaim().
-//        this will be equivalent in this case to "claims.getSubject();" where "claims = extractAllClaims(jwtAccessToken)"
     }
 
     public <R> R extractClaim(
             String jwtAccessToken,
             Function<Claims, R> claimsResolver
     ) throws JwtException, IllegalArgumentException {
-
-//        try {
-//
-//            final Claims claims = extractAllClaims(jwtAccessToken);
-//        } catch (Exception /* or JwtException*/ e) {
-//            throw new RuntimeException(e);
-//        }
-//            return claimsResolver.apply(claims);
-
-        log.info("jwtAccessToken: {}", jwtAccessToken);
-
         final Claims claims = extractAllClaims(jwtAccessToken);
         return claimsResolver.apply(claims);
     }
@@ -76,7 +47,6 @@ public class JwtService {
     }
 
 //    private methods:
-
     private String generateAccessToken(HashMap<String,Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
                 .claims(extraClaims)
@@ -111,5 +81,4 @@ public class JwtService {
         return extractClaim(jwtAccessToken, Claims::getExpiration)
                 .before(new Date(System.currentTimeMillis()));
     }
-
 }
