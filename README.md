@@ -28,6 +28,8 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 ---
 
 ## Dependencies
+💡 **TODO:** 
+- [ ] add the dependencies
 
 ---
 
@@ -117,6 +119,19 @@ This is a full-stack e-commerce application built using Spring Boot for the back
     - Payment:
       - to complete user's payment process
 </details>
+
+---
+
+## application structure:
+
+
+### folder structure
+💡 **TODO:** 
+- [ ] add this section
+
+### exception handling
+💡 **TODO:** 
+- [ ] add this section
 
 ---
 
