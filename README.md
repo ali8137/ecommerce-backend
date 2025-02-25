@@ -32,6 +32,10 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 ---
 
 ## Database Design
+💡 **TODO:** 
+- [ ] add database schema diagram
+- [ ] update the below data to reflect the up-to-date datase design in the application
+
 <details>
   <summary>
     the entity classes of the database this application are: User, Address, Product, Review, Rating, Category, QtyPerSize, Cart, CartItem, Order, OrderItem, Payment.
@@ -122,21 +126,106 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 ### Prerequisites
 - Java 11+
 - MySQL
+- Maven
+- Git
 
 
 ### Backend Setup
+- clone the repository:
+
+```bash
+git clone git@github.com:ali8137/Ecommerce-web-application-backend.git
+cd Ecommerce-web-application-backend
+```
+
+- configure environment variables:
+
+```YAML
+spring:
+  datasource:
+    username: ${MYSQL_DB_USERNAME}
+    password: ${MYSQL_DB_PASSWORD}
+stripe:
+  api:
+    key: ${STRIPE_SECRET_KEY}
+```
+
+and the environment variables: STRIPE_WEBHOOK_SECRET and JWT_SECRET_KEY
+
+- install dependencies:
+
+```bash
+mvn clean install
+```
+
+or using "ctrl + shift + o" in Intellij IDEA
+
+- run the application:
+
+```bash
+mvn spring-boot:run
+```
 
 
 ### Database Setup
+- create the database:
+
+```bash
+mysql -u root -p -e "CREATE DATABASE ecommerce;"
+```
+
+or using MySQL workbench UI
+
+💡 **TODO:** 
+- [ ] for the current application features, initialize/populate the database with the initial necassary data for the application like products, categories, ...
 
 ---
 
 ## Usage
+- once the backend is running, you can access the app at http://localhost:8088
+
+💡 **TODO:** 
+- [ ] continue/fill the below section
+### API Endpoints
+- `GET /api/...` - ...
+- `POST /api/...` - ...
+- `PUT /api/...` - ...
+- 
+
+### Authentication
+To access protected routes, you need to authenticate using a JWT token. 
+- Log in using `POST /api/auth/register` with your email and password.
+- After successful login, use the returned JWT token in the `Authorization` header of your subsequent requests.
+
+### Example Request
+request: 
+**POST** `http://localhost:8088/api/login`
+- **Headers**: `Content-Type: application/json`
+- **Body**:
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+response:
+{
+  "token": "your-jwt-token-here"
+}
 
 ---
 
 ## API Documentation
+- API Base URL: http://localhost:8088/api
+
+💡 **TODO:** 
+- [ ] add postman tests
+- [ ] add Swagger API documentation
 
 ---
 
 ## Deployment
+
+💡 **TODO:** 
+- [ ] update this section
