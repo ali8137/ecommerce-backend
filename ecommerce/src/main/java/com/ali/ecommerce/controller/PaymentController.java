@@ -14,23 +14,11 @@ import java.util.Map;
 
 
 @RestController
-//@RequestMapping("/api/payment")
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
 public class PaymentController {
 
     private final PaymentService service;
-
-//    removed in the new design pattern for making payments
-//    @PostMapping("/create-checkout-session")
-//    public ResponseEntity<Map<String, String>> createCheckoutSession(
-//            @RequestBody CreateCheckoutSessionRequestDTO requestBody
-//    ) {
-//        //    delegating the functionality to the corresponding Service method...
-//        Map<String, String> response = service.createCheckoutSession(requestBody);
-//
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
 
     @PostMapping("/{PaymentMethod}")
     public ResponseEntity<Map<String, String>> makePayment(
