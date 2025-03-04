@@ -1,7 +1,6 @@
 package com.ali.ecommerce.controller;
 
 import com.ali.ecommerce.DTO.CreateCheckoutSessionRequestDTO;
-import com.ali.ecommerce.model.CartItem;
 import com.ali.ecommerce.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +19,12 @@ public class PaymentController {
 
     private final PaymentService service;
 
-    @PostMapping("/{PaymentMethod}")
+    @PostMapping("/{paymentMethod}")
     public ResponseEntity<Map<String, String>> makePayment(
             @Valid @RequestBody CreateCheckoutSessionRequestDTO requestBody,
             /* TODO: replace or rename the class of the above parameter to suit all payment strategies in the new design pattern*/
             /* TODO: we could have passed the amount as well. this will make the code performant*/
-            @PathVariable String method
+            @PathVariable("paymentMethod") String method
     ) {
         //    delegating the functionality to the corresponding Service method...
         Map<String, String> response = service.makePayment(requestBody, method);
