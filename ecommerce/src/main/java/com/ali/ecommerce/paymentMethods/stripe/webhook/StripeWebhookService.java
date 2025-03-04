@@ -1,4 +1,4 @@
-package com.ali.ecommerce.webhook.stripe;
+package com.ali.ecommerce.paymentMethods.stripe.webhook;
 
 import com.ali.ecommerce.exception.StripePaymentException;
 import com.ali.ecommerce.repository.OrderRepository;
