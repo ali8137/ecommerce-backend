@@ -13,12 +13,6 @@ public class PaymentStrategyFactory {
 
     @Autowired
     public PaymentStrategyFactory(List<PaymentStrategy> paymentStrategies) {
-//        the above list of payment strategies is injected from the Spring
-//        context (constructor injection). and then we can set the value (value
-//        of elements in this case) of the above data field to point to this injected
-//        dependency (elements of the injected dependency in this case).
-//        this.paymentStrategies = new HashMap<>();
-
         // add all registered payment strategies beans to the strategies map of this factory class:
         paymentStrategies.forEach(paymentStrategy ->
                 this.paymentStrategies.put(

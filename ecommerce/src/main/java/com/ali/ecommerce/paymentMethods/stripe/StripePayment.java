@@ -19,7 +19,6 @@ import java.util.List;
 
 
 @Component
-// the above annotation is used to register this class as a bean in the Spring context
 public class StripePayment implements PaymentStrategy {
 
     @Value("${stripe.api.key}")
