@@ -1,4 +1,4 @@
-package com.ali.ecommerce.webhook.stripe;
+package com.ali.ecommerce.paymentMethods.stripe.webhook;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
