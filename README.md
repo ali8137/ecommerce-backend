@@ -29,7 +29,19 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ## Dependencies
 💡 **TODO:** 
-- [ ] add the dependencies
+- [x] add the dependencies
+- Java version 17
+- Spring Boot Version 3.3.4
+  - Spring Web
+  - Spring Security
+  - Spring Data JPA
+  - MySQL Driver
+  - Spring Boot DevTools
+  - Validation
+- jjwt-impl version 0.12.6
+- jjwt-api version 0.12.6
+- jjwt-jackson version 0.12.6
+- Stripe-java version 28.2.0
 
 ---
 
