@@ -134,6 +134,13 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ---
 
+## application architecture:
+
+💡 **TODO:** 
+- [ ] add database schema diagram
+
+---
+
 ## application structure:
 
 
