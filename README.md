@@ -137,7 +137,7 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 ## application architecture:
 
 💡 **TODO:** 
-- [ ] add database schema diagram
+- [ ] add application architecture schema diagram
 
 ---
 
@@ -211,7 +211,7 @@ mysql -u root -p -e "CREATE DATABASE ecommerce;"
 or using MySQL workbench UI
 
 💡 **TODO:** 
-- [ ] for the current application features, initialize/populate the database with the initial necassary data for the application like products, categories, ...
+- [ ] for the current application features, initialize/populate the database with the initial necessary data for the application like products, categories, ...
 
 ---
 
