@@ -25,13 +25,15 @@ public class OrderItem {
     private String size;
     private Integer quantity;
     @ToString.Exclude
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(
         referencedColumnName = "id"
     )
     private Product product;
     /* TODO: the above relationship reflects certain inconsistency/redundancy in the current design of the database. thus, when changing the database design, it will become consistent, and with no redundancy of data*/
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(
             referencedColumnName = "id"

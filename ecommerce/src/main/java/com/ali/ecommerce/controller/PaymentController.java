@@ -35,8 +35,13 @@ public class PaymentController {
                 .map(cartItem -> cartItem.getProduct().getPrice())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        service.persistPayment(sessionId, amount, requestBody.getOrderId());
+//        version 1:
+//        service.persistPayment(sessionId, amount, requestBody.getOrderId());
 
+//        version 2:
+        service.persistPayment(sessionId, requestBody.getOrderId());
+
+        // return the response:
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

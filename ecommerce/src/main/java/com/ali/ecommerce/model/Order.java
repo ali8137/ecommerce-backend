@@ -30,6 +30,7 @@ public class Order {
             updatable = false
     )
     private LocalDateTime orderDate;
+    @ToString.Exclude
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(
@@ -38,7 +39,7 @@ public class Order {
     private User user;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(
             mappedBy = "order",
             cascade = CascadeType.ALL
