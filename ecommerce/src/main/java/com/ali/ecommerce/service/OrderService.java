@@ -2,12 +2,15 @@ package com.ali.ecommerce.service;
 
 
 import com.ali.ecommerce.exception.CartException;
+import com.ali.ecommerce.exception.OrderException;
 import com.ali.ecommerce.model.Cart;
 import com.ali.ecommerce.model.Order;
 import com.ali.ecommerce.model.OrderItem;
 import com.ali.ecommerce.model.OrderStatus;
 import com.ali.ecommerce.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +22,38 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
 
+    private static final Logger log = LoggerFactory.getLogger(OrderService.class);
     private final OrderRepository orderRepository;
     private final CartService cartService;
+
+
+
+    public List<Order> getUserOrders(UserDetails userDetails) {
+        // extract email from user details:
+        String email = userDetails.getUsername();
+
+        var userOrders = orderRepository.findAllByUserEmail(email);
+
+        if (userOrders.isEmpty()) {
+            throw new OrderException("No order found");
+        }
+
+        return userOrders;
+    }
+
+    // get the user's current order:
+    public Order getUserCurrentOrder(UserDetails userDetails) {
+        // extract email from user details:
+        String email = userDetails.getUsername();
+
+        // get the user's current order from the database and return it:
+        return orderRepository
+//                .findFirstByUserEmailAndOrderStatusOrderByOrderDateDesc(email, OrderStatus.CREATED)
+//                or:
+                .findByUserEmailAndOrderStatus(email, OrderStatus.CREATED)
+                .orElseThrow(() -> new OrderException("No order found"));
+    }
+
 
     // create an order from the user's cart and save it to the database:
     public void createOrderFromCart(UserDetails userDetails) {
@@ -36,6 +69,7 @@ public class OrderService {
                 .totalPrice(firstCart.getTotalPrice())
                 .orderDate(LocalDateTime.now())
                 .orderStatus(OrderStatus.CREATED)
+                .user(firstCart.getUser())
                         .build();
 
         // create order items from the cart items:
@@ -47,6 +81,8 @@ public class OrderService {
                     orderItem.setProduct(cartItem.getProduct());
                     orderItem.setQuantity(cartItem.getQuantity());
                     orderItem.setPrice(cartItem.getProduct().getPrice());
+                    orderItem.setColor(cartItem.getColor());
+                    orderItem.setSize(cartItem.getSize());
 
                     // associate the order item with the order:
                     orderItem.setOrder(order);
@@ -56,6 +92,8 @@ public class OrderService {
 
         // set the order items in the order:
         order.setOrderItems(orderItems);
+
+//        log.info("order: {}", order);
 
         // save the order along with the order items in the database:
         orderRepository.save(order);

@@ -3,6 +3,7 @@ package com.ali.ecommerce.service;
 
 import com.ali.ecommerce.DTO.CreateCheckoutSessionRequestDTO;
 import com.ali.ecommerce.exception.OrderException;
+import com.ali.ecommerce.model.OrderStatus;
 import com.ali.ecommerce.model.Payment;
 import com.ali.ecommerce.model.PaymentMethod;
 import com.ali.ecommerce.paymentMethods.PaymentStrategy;
@@ -36,19 +37,52 @@ public class PaymentService {
     }
 
 
-    public void persistPayment(String id, BigDecimal amount, Long orderId) {
+//    public void persistPayment(String id, BigDecimal amount, Long orderId) {
+//        // create the payment:
+//        Payment payment = Payment.builder()
+//                .paymentMethod(PaymentMethod.STRIPE)
+//                .paymentDate(LocalDateTime.now())
+//                .amount(amount)
+//                .transactionId(id)
+//                .build();
+//
+//        // get the order from the database:
+//        var order = orderRepository.findById(orderId)
+//                .orElseThrow(() -> new OrderException("Order not found"));
+//
+//        // set the order status to "completed":
+//        order.setOrderStatus(OrderStatus.COMPLETED);
+//
+//        // associate the payment with the order (foreign key):
+//        payment.setOrder(order);
+//
+//        // save the payment to the database:
+//        paymentRepository.save(payment);
+//    }
+
+//     version 2:
+    public void persistPayment(String id, Long orderId) {
+        // create the payment:
         Payment payment = Payment.builder()
                 .paymentMethod(PaymentMethod.STRIPE)
                 .paymentDate(LocalDateTime.now())
-                .amount(amount)
                 .transactionId(id)
                 .build();
 
+        // get the order from the database:
         var order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderException("Order not found"));
 
+        // set the order status to "completed":
+        order.setOrderStatus(OrderStatus.COMPLETED);
+
+        // set the payment amount to the order total price:
+        payment.setAmount(order.getTotalPrice());
+
+        // associate the payment with the order (foreign key):
         payment.setOrder(order);
 
+        // save the payment to the database:
         paymentRepository.save(payment);
     }
 

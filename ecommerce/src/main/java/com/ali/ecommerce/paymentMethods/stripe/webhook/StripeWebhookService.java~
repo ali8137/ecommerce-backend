@@ -56,8 +56,7 @@ public class StripeWebhookService {
 //                    orderRepository.save(order);
 //                });
 
-//                chose to rather persist the payment in the PaymentController class
-//                paymentService.persistPayment(session.getId(), orderId);
+                paymentService.persistPayment(session.getId(), session.getAmountTotal(), orderId);
 
             }
 

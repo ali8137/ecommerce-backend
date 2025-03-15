@@ -33,12 +33,14 @@ public class CartService {
         // extract email from user details:
         String email = userDetails.getUsername();
 
+        // get the user's cart(s) from the database:
         var userCarts = getCarts(email);
 
         if (userCarts.isEmpty()) {
             throw new CartException("No cart found");
         }
 
+        // return the user's cart(s):
         return userCarts;
     }
 
