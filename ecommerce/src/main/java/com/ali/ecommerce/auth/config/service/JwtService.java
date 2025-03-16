@@ -73,7 +73,8 @@ public class JwtService {
                 .getPayload();
     }
 
-    private boolean isAccessTokenExpired(String jwtAccessToken) {
+    // changed this method from private to public
+    public boolean isAccessTokenExpired(String jwtAccessToken) {
         return extractExpiration(jwtAccessToken);
     }
 

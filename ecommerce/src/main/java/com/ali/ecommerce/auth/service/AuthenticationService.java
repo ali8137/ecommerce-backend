@@ -75,4 +75,9 @@ public class AuthenticationService {
     }
 
     //    TODO: refresh token endpoint + having automatic rotation
+
+
+    public Boolean isTokenExpired(String token) {
+        return jwtService.isAccessTokenExpired(token);
+    }
 }
