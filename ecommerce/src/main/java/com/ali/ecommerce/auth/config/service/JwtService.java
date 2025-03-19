@@ -1,6 +1,7 @@
 package com.ali.ecommerce.auth.config.service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -52,7 +53,8 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000)) /* 15 min * 60 sec * 1000 milliseconds */
+//                .expiration(new Date(System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000)) /* 15 min * 60 sec * 1000 milliseconds */
+                .expiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) /* 15 min * 60 sec * 1000 milliseconds */
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
     }
@@ -75,10 +77,15 @@ public class JwtService {
 
     // changed this method from private to public
     public boolean isAccessTokenExpired(String jwtAccessToken) {
-        return extractExpiration(jwtAccessToken);
+//        try {
+            return extractExpiration(jwtAccessToken);
+//        } catch (ExpiredJwtException e) {
+//            return true; // If token is expired, return true instead of throwing an error
+//        }
     }
 
-    private boolean extractExpiration(String jwtAccessToken) {
+    // the below method might throw an ExpiredJwtException
+    private boolean extractExpiration(String jwtAccessToken) throws ExpiredJwtException{
         return extractClaim(jwtAccessToken, Claims::getExpiration)
                 .before(new Date(System.currentTimeMillis()));
     }

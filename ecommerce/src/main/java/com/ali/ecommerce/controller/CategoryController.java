@@ -4,6 +4,7 @@ import com.ali.ecommerce.DTO.databaseDTO.CategoryDTO;
 import com.ali.ecommerce.DTO.CreateNewCategoryRequestDTO;
 import com.ali.ecommerce.exception.CategoryException;
 import com.ali.ecommerce.service.CategoryService;
+import com.ali.ecommerce.util.CategoryNode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,16 @@ public class CategoryController {
         var categories = categoryService.getEachPossibleCategory();
 
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
+    /* TODO: developer-constraint: a CategoryException propagates from the service layer
+        to the below method.
+        */
+    @GetMapping("/categories/hierarchy")
+    public ResponseEntity<List<CategoryNode>>  getAllCategoriesAsStringsArray() throws CategoryException {
+        List<CategoryNode> categoriesHierarchy = categoryService.getAllCategoriesAsStringsArray();
+
+        return new ResponseEntity<>(categoriesHierarchy, HttpStatus.OK);
     }
 
 
