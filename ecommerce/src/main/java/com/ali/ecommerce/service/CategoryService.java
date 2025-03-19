@@ -7,12 +7,15 @@ import com.ali.ecommerce.exception.CategoryException;
 import com.ali.ecommerce.exception.CategoryInvalidDescriptionException;
 import com.ali.ecommerce.model.Category;
 import com.ali.ecommerce.repository.CategoryRepository;
+import com.ali.ecommerce.util.CategoryHierarchyTree;
+import com.ali.ecommerce.util.CategoryNode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 
 //import static com.ali.ecommerce.mapper.CategoryMapper.mapToCategories;
@@ -82,6 +85,19 @@ public class CategoryService {
         catch (ConstraintViolationException e) {
             throw new CategoryInvalidDescriptionException(e.getMessage(), e.getConstraintViolations());
         }
+    }
+
+    public List<CategoryNode> getAllCategoriesAsStringsArray() {
+        List<CategoryDTO> allCategories = this.getAllCategories();
+
+//        List<String> paths = allCategories.stream()
+//                .map(CategoryDTO::getPath)
+//                .flatMap(path -> Arrays.stream(path.split(" - ")))
+//                .toList();
+//
+//        return paths.toArray(new String[0]);
+
+        return CategoryHierarchyTree.buildCategoryHierarchyTree(allCategories);
     }
 
 

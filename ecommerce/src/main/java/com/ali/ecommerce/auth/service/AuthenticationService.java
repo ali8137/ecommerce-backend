@@ -8,6 +8,7 @@ import com.ali.ecommerce.exception.UserException;
 import com.ali.ecommerce.model.Role;
 import com.ali.ecommerce.model.User;
 import com.ali.ecommerce.repository.UserRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -78,6 +79,11 @@ public class AuthenticationService {
 
 
     public Boolean isTokenExpired(String token) {
-        return jwtService.isAccessTokenExpired(token);
+        try {
+            return jwtService.isAccessTokenExpired(token);
+        } catch (ExpiredJwtException e) {
+            return true; // If the token is expired, return true instead of throwing an error
+        }
+        // extractExpiration method in class JwtService throws an ExpiredJwtException when token is expired
     }
 }
