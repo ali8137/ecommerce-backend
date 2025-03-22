@@ -60,6 +60,8 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+<!--			 i have added the below because lombok is needed only at compile time, and not needed inside the fat jar (UberJar)-->
+			<scope>provided</scope> <!-- not needed at runtime -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -129,5 +131,26 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
+
+<!--	 you can use the below with the command "mvn clean package -Pproduction" to tell maven to exclude devtools in the resulted jar-->
+<!--	<profiles>-->
+<!--		<profile>-->
+<!--			<id>production</id>-->
+<!--			<activation>-->
+<!--				<activeByDefault>false</activeByDefault>-->
+<!--			</activation>-->
+<!--			<dependencies>-->
+<!--				<dependency>-->
+<!--					<groupId>org.springframework.boot</groupId>-->
+<!--					<artifactId>spring-boot-devtools</artifactId>-->
+<!--					<scope>runtime</scope>-->
+<!--					<optional>true</optional>-->
+<!--				</dependency>-->
+<!--			</dependencies>-->
+<!--		</profile>-->
+<!--	</profiles>-->
+
 
 </project>
