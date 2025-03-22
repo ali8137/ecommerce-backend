@@ -1,0 +1,129 @@
+
+#version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.41-debian
+    container_name: mysql_container
+    restart: unless-stopped
+#    restart: always
+    # - creating .env file is enough. adding the below property is not necessary unless the .env
+    #   directory as the docker-compose file, or if there are many .env files. as docker-compose
+    #   automatically injects the environment variables from the .env file that is in the same
+    #   directory as the docker-compose file
+    env_file:
+      - .env.prod
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # /var/lib/mysql is the default directory where MySQL stores its data
+#      - ./initdb:/docker-entrypoint-initdb.d # Mount the initdb directory
+      # - docker-entrypoint-initdb.d is the directory where the initialization scripts are
+      #   stored. these scripts will be run automatically when the container starts
+#    volumes:
+#      - type:
+#        target:
+#        source:
+    ports:
+      - "3307:3306"
+#    command:
+#      --datadir=/custom_data # Set the data directory from default /var/lib/mysql to /custom_data
+    networks:
+      - mysql # mysql_container will be part of the mysql network
+      # - By default, Docker Compose creates a bridge network, allowing containers within the same Compose
+      #   file to resolve each other by their container names (e.g., mysql can be accessed by mysql
+      #   within the workbench container)
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+#      interval: 10s
+#      retries: 5
+
+# you can choose to run MySQL workbench rather locally and then connect it to the MYSQL docker
+#  container through its exposed port
+  workbench:
+    image: linuxserver/mysql-workbench:8.0.41
+    container_name: mysql_workbench
+    depends_on:
+      - mysql
+    environment:
+      - TZ=Etc/UTC # Set the timezone to UTC
+    volumes:
+      - workbench_config:/config # Mount the workbench configuration directory
+#    volumes:
+#      - type:
+#        target:
+#        source:
+    ports:
+      - "3000:3000"
+    networks:
+      - mysql # mysql_workbench will be part of the mysql network
+      # - By default, Docker Compose creates a bridge network, allowing containers within the same Compose
+      #   file to resolve each other by their container names (e.g., mysql can be accessed by mysql
+      #   within the workbench container)
+      # - After adding my_network, Both mysql and workbench containers are connected to the custom
+      #   network my_network. They are also implicitly part of the default Docker network, but communication
+      #   between the two containers will occur on the custom my_network.
+    restart: unless-stopped
+#    restart: always
+
+  ecommerce_backend:
+#    image: ecommerce-backend
+#    the above means to pull the image "ecommerce-backend" from Docker Hub
+    container_name: ecommerce_backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+#      or
+#      dockerfile: ./Dockerfile
+    init: true
+    depends_on:
+      - mysql
+#      - mysql:
+#        condition: service_healthy
+    ports:
+      - 8088:8088
+#    volumes:
+#      -
+#    volumes:
+#      - type:
+#        target:
+#        source:
+    networks:
+      - mysql
+      - my_network
+    # - creating .env file is enough. adding the below property is not necessary unless the .env
+    #   file is not in the same directory as the docker-compose file, or if there are many .env
+    #   files. as docker-compose automatically injects the environment variables from the .env
+    #   file that is in the same directory as the docker-compose file
+    env_file:
+      - .env.prod
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+#      - SPRING_PROFILES_ACTIVE=docker
+    # - the above is equivalent to property "spring.profiles.active=docker" in the "application.properties" file. we added the
+    #   property here in the above line instead of add ing the property "spring.profiles.active=docker" in the
+    #   "application.properties" file because the environment must be knowing which "application.properties"
+    #   file to use first then it can access its properties
+    # - the above means that the profile "docker" will be used for this project. the profile "docker"
+    #   refers to the file "application-docker.properties"
+    restart: unless-stopped
+#    restart: always
+
+volumes:
+  mysql_data: # docker-managed volume for MySQL data
+  workbench_config: # docker-managed volume for MySQL Workbench configuration
+
+networks:
+  my_network:  # Define custom network
+    driver: bridge
+    # - A bridge network is a private internal network created by Docker on your host machine. When you run
+    #   a container in bridge mode, it gets its own IP address on this virtual network (accessible by other containers
+    #   in the same bridge network). The containers can communicate with each other using their internal IPs or
+    #   container names, but they are isolated from the outside world, unless you expose ports using ports in your
+    #   Docker Compose file or the docker run command.
+  mysql:
+    driver: bridge

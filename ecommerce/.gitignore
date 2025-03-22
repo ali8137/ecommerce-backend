@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### .env files ###
+.env
+.env.prod
+.env.local
+.env.test
