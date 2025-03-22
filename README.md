@@ -154,7 +154,56 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ---
 
-## Installation
+## Installation (docker setup)
+
+
+### Prerequisites
+- Git
+- docker & docker-compose
+
+
+### Backend And Database Setup
+- clone the repository:
+
+```bash
+git clone git@github.com:ali8137/Ecommerce-web-application-backend.git
+cd Ecommerce-web-application-backend
+```
+
+- configure environment variables:
+
+follow either one of the below approaches:
+  - add .env file:
+
+    add the following environment variables:
+    1. MYSQL_DATABASE
+    2. MYSQL_USER
+    3. MYSQL_PASSWORD
+    4. MYSQL_ROOT_PASSWORD
+    5. JWT_SECRET_KEY
+    6. STRIPE_SECRET_KEY
+    7. STRIPE_WEBHOOK_SECRET
+
+  - add the following environment variables to the configuration of the application on intellij
+
+```YAML
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+```
+
+and the environment variables: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and JWT_SECRET_KEY
+
+- run the docker-compose.yaml file
+
+💡 **TODO:** 
+- [ ] for the current application features, initialize/populate the database with the initial necessary data for the application like products, categories, ...
+
+---
+
+## Installation (local development)
 
 
 ### Prerequisites
