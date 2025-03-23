@@ -8,9 +8,12 @@ spring:
     name: ecommerce
   ## Database
   datasource:
-    url: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+#    url: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
+    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
+    #    username: ${MYSQL_USER}
+    username: ${MYSQLUSER}
+    #    password: ${MYSQL_PASSWORD}
+    password: ${MYSQLPASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
