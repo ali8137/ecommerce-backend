@@ -1,7 +1,8 @@
 #this is the production version of the application.yml file
 
 server:
-  port: 8088
+#  port: 8088
+  port: 8080
 
 spring:
   application:
