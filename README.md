@@ -136,6 +136,15 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ## application structure:
 
+
+### folder structure
+💡 **TODO:** 
+- [ ] add this section
+
+### exception handling
+💡 **TODO:** 
+- [ ] add this section
+
 ---
 
 ## Installation (docker setup)
@@ -196,7 +205,8 @@ and the environment variables: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and JWT_
 - Maven
 - Git
 
-@@ -217,23 +227,17 @@ and the environment variables: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and JWT_
+
+### Backend Setup
 - clone the repository:
 
 ```bash
@@ -223,7 +233,20 @@ and the environment variables: STRIPE_WEBHOOK_SECRET and JWT_SECRET_KEY
 
 - install dependencies:
 
-@@ -254,18 +258,18 @@ mvn spring-boot:run
+```bash
+mvn clean install
+```
+
+or using "ctrl + shift + o" in Intellij IDEA
+
+- run the application:
+
+```bash
+mvn spring-boot:run
+```
+
+
+### Database Setup
 - create the database:
 
 ```bash
@@ -242,7 +265,28 @@ or using MySQL workbench UI
 
 💡 **TODO:** 
 - [ ] continue/fill the below section
-@@ -294,7 +298,7 @@ request:
+### API Endpoints
+- `GET /api/...` - ...
+- `POST /api/...` - ...
+- `PUT /api/...` - ...
+- 
+
+### Authentication
+To access protected routes, you need to authenticate using a JWT token. 
+- Log in using `POST /api/auth/register` with your email and password.
+- After successful login, use the returned JWT token in the `Authorization` header of your subsequent requests.
+
+### Example Request
+request: 
+**POST** `http://localhost:8088/api/login`
+- **Headers**: `Content-Type: application/json`
+- **Body**:
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
 
 response:
 {
@@ -250,7 +294,22 @@ response:
 }
 
 ---
-@@ -317,6 +321,5 @@ response:
+
+## API Documentation
+- API Base URL: http://localhost:8088/api
+
+💡 **TODO:** 
+- [ ] add postman tests
+- [ ] add Swagger API documentation
+
+---
+
+## Deployment
+
+💡 **TODO:** 
+- [ ] update this section
+
+
 ## 📌 Authorship & License  
 
 This project was created by **[Ali Mezher](https://github.com/ali8137)**.  
