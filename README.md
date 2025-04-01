@@ -139,6 +139,65 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 💡 **TODO:** 
 - [ ] add application architecture schema diagram
 
+
+### high level explanation:
+This is a simplified ecommerce project with features like fetching categories, products, managing them in admin panel, implementing drag-and-drop functionality for easy management of the categories and products.
+
+### Backend architecture:
+- technologies:
+  - spring boot
+  - postgreSQL
+  - JWT authentication
+ 
+
+- drag-and-drop: was implemented by persisting the data in the database to enable the user to get access to the new listing order customized by the admin. the frontend data used to achieve this were the id and listingOrder of the categories, where the order hierarchy inducted through the index order of the categories after/during the dragging, where the exposed hooks and props of dnd-kit were being used to track the new order of the categories and to track the dragged and target item. these data were used to fetch the categories from the database and persist them with the updated hierarchy order.
+
+- API structure:
+- categories:
+  - api/categories
+    ---> categories in order
+  - api/categories//update-categories-order
+    ---> reorder categories
+- products:
+  - api/products
+    ---> products in order
+- cart:
+  - api/cart/get-carts
+    ---> get user cart along with the cart items
+  - api/cart/add-cart-item
+    ---> add a cart item to the user cart
+- cart item:
+  - api/cart-item/increment-cart-item/{id}
+    ---> increment quantity of a cartitem of the user cart
+- api/auth/register
+  ---> register/sign up
+- api/auth/authenticate
+ ---> login/sign in
+
+### frontend architecture:
+- app routes:
+  - user routes:
+    - categories
+    - categories/[categoryName]
+    - categories/[categoryName]/product
+  - admin routes:
+    - categories
+    - categories/[categoryName]
+- components:
+  -  are inside 'components' directory
+  -  some component: <Category />, <Product />, <AdminCategory />, <Authentication />, <AuthProvider />, <Cart />, <CartProduct />, <CartOrderSummary />.
+- redux slices are inside 'redux' directory
+  -  some redux slices: auth, cart, category, ...
+- dnd-kit components are inside 'components/admin/dnd'
+  - <Draggable />
+  - <Droppable />
+  - <DnDContext />
+  - onDragOver event handler, active and over props
+- data fetching:
+  - axios
+  - NEXTjs API routing
+  - api.ts
+
 ---
 
 ## application structure:
@@ -154,61 +213,12 @@ This is a full-stack e-commerce application built using Spring Boot for the back
 
 ---
 
-## Installation (docker setup)
-
-
-### Prerequisites
-- Git
-- docker & docker-compose
-
-
-### Backend And Database Setup
-- clone the repository:
-
-```bash
-git clone git@github.com:ali8137/Ecommerce-web-application-backend.git
-cd Ecommerce-web-application-backend
-```
-
-- configure environment variables:
-
-follow either one of the below approaches:
-  - add .env file:
-
-    add the following environment variables:
-    1. MYSQL_DATABASE
-    2. MYSQL_USER
-    3. MYSQL_PASSWORD
-    4. MYSQL_ROOT_PASSWORD
-    5. JWT_SECRET_KEY
-    6. STRIPE_SECRET_KEY
-    7. STRIPE_WEBHOOK_SECRET
-
-  - add the following environment variables to the configuration of the application on intellij
-
-```YAML
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-```
-
-and the environment variables: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and JWT_SECRET_KEY
-
-- run the docker-compose.yaml file
-
-💡 **TODO:** 
-- [ ] for the current application features, initialize/populate the database with the initial necessary data for the application like products, categories, ...
-
----
-
 ## Installation (local development)
 
 
 ### Prerequisites
 - Java 11+
-- MySQL
+- PostgreSQL
 - Maven
 - Git
 
@@ -217,23 +227,17 @@ and the environment variables: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and JWT_
 - clone the repository:
 
 ```bash
-git clone git@github.com:ali8137/Ecommerce-web-application-backend.git
-cd Ecommerce-web-application-backend
+git clone git@github.com:ali8137/ecommerce-exam.git
+cd ecommerce-exam
 ```
 
 - configure environment variables:
 
-```YAML
-spring:
-  datasource:
-    username: ${MYSQL_DB_USERNAME}
-    password: ${MYSQL_DB_PASSWORD}
-stripe:
-  api:
-    key: ${STRIPE_SECRET_KEY}
-```
 
-and the environment variables: STRIPE_WEBHOOK_SECRET and JWT_SECRET_KEY
+backend environment variables: JWT_SECRET_KEY, MYSQL_DB_USERNAME, and MYSQL_DB_PASSWORD
+frontend environment variables: NEXT_PUBLIC_BACKEND_API_URL, and NEXT_PUBLIC_API_BASE_URL
+
+it is recommended to add .env file at the root of each project side
 
 - install dependencies:
 
@@ -254,18 +258,18 @@ mvn spring-boot:run
 - create the database:
 
 ```bash
-mysql -u root -p -e "CREATE DATABASE ecommerce;"
+postgre -u root -p -e "CREATE DATABASE ecommerce;"
 ```
 
-or using MySQL workbench UI
+or using pgadmi4 UI
 
-💡 **TODO:** 
-- [ ] for the current application features, initialize/populate the database with the initial necessary data for the application like products, categories, ...
+don't forget to create the database in postgreSQL 'ecommerce-exam'
+there are initdb SQL files in the backend part, execute them before starting the project for better devlopment experience
 
 ---
 
 ## Usage
-- once the backend is running, you can access the app at http://localhost:8088
+- once the backend is running, you can access the app at http://localhost:8080 and the frontend at http://localhost:3000
 
 💡 **TODO:** 
 - [ ] continue/fill the below section
@@ -294,7 +298,7 @@ request:
 
 response:
 {
-  "token": "your-jwt-token-here"
+  "accessToken": "your-jwt-token-here"
 }
 
 ---
@@ -317,6 +321,5 @@ response:
 ## 📌 Authorship & License  
 
 This project was created by **[Ali Mezher](https://github.com/ali8137)**.  
-If you use this project, please provide proper credit by linking back to this repository.  
 
 📜 **License:** This project is licensed under the [MIT License](LICENSE).  
